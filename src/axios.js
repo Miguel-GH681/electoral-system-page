@@ -1,0 +1,20 @@
+import axios from 'axios';
+
+const api = axios.create({
+    baseURL: 'http://localhost:3002/api',
+    timeout: 10000
+});
+
+
+// Adjunta token automáticamente si existe
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+        config.headers['x-token'] = token;
+    }
+
+    return config;
+});
+
+
+export default api;

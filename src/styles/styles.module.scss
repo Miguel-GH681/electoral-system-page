@@ -1,0 +1,51 @@
+$primary: rgb(231, 187, 0);
+$primary-opaque: rgb(228, 201, 81); //rgb(231 187 0)
+$shadow-color: rgba(0,0,0, 0.1);
+$border-color: rgba(0,0,0, 0.1);
+
+.box{
+    margin-top: 50px;
+    height: 300px;
+    border: 1px solid $border-color;
+    box-shadow: 1px 3px 6px $shadow-color;
+    cursor: pointer;
+
+    b{
+        margin-top: 5px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    p{
+        margin-top: 5px;
+        text-align: center;
+        color: gray;
+        font-size: 13px;
+    }
+}
+
+.box:hover{
+    border: 1px solid $primary;
+    box-shadow: 0px 0px 5px rgba(241, 216, 119, 0.9);
+}
+
+.box-creation{
+    margin-top: 50px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    background-color: $primary-opaque;
+    border: 1px solid $primary-opaque;
+}
+
+.form-card{
+    border: 1px solid $border-color;
+    box-shadow: 1px 3px 6px $shadow-color;
+}
+
+.maintenance-container{
+    padding: 20px 30px;
+}

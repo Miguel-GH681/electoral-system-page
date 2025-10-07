@@ -1,0 +1,12 @@
+$primary: rgb(231, 187, 0);  //rgb(231 187 0)
+$shadow-color: rgba(0,0,0,0.3);
+
+.navbar{
+    background-color: $primary;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    padding-left: 20px;
+    padding-right: 20px;
+}

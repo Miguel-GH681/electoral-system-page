@@ -1,24 +1,55 @@
-import logo from './logo.svg';
-import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider } from './context/AuthContext';
+import { CampaignProvider } from './context/CampaignContext';
+import LoginPage from './pages/LoginPage';
+import AdminDashboard from './pages/Campaigns';
+import CreateCampaign from './pages/CampaignMaintenance';
+import ProtectedRoute from './components/ProtectedRoute';
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <CampaignProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route 
+              path="/" 
+              element={<Navigate to="/login" replace />} 
+            />
+
+            <Route 
+              path="/login" 
+              element={<LoginPage />} 
+            />
+
+            <Route
+              path='/campaigns'
+              element={
+                <ProtectedRoute>
+                  <AdminDashboard />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+              path="/campaigns/maintenance"
+              element={
+                <ProtectedRoute allowedRole={1}>
+                  <CreateCampaign />
+                </ProtectedRoute>
+              }
+            />
+            
+            <Route 
+              path="*" 
+              element={<div>404 Not Found</div>} 
+            />
+          </Routes>
+        </BrowserRouter>
+      </CampaignProvider>
+    </AuthProvider>
   );
 }
 

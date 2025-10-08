@@ -7,7 +7,8 @@ import Col from 'react-bootstrap/Col';
 import styles from "../styles/styles.module.scss";
 import { useNavigate } from 'react-router-dom';
 import { GrBook } from "react-icons/gr";
-import { FaPlus } from "react-icons/fa";
+import { FaPlus, FaVoteYea } from "react-icons/fa";
+import { BsFillPeopleFill } from "react-icons/bs";
 
 
 const AdminDashboard = () => {
@@ -48,7 +49,22 @@ const AdminDashboard = () => {
                   <Card.Body className="d-flex flex-column align-items-center">
                     <GrBook size={25}/>
                     <b>{c.title}</b>
-                    <p>{c.description}</p>
+                    <hr />
+                    <div className={styles['text-container']}>
+                      <p>{c.description}</p>
+                    </div>
+                    <Row className={styles['item-row']}>
+                      <Col className={styles['item-col']}>
+                        <BsFillPeopleFill />
+                        <p>Candidatos</p>
+                        <p>10</p>
+                      </Col>
+                      <Col className={styles['item-col']}>
+                        <FaVoteYea />
+                        <p>Votos</p>
+                        <p>10</p>
+                      </Col>
+                    </Row>
                   </Card.Body>
                 </Card>
               </Col>

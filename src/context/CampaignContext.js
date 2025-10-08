@@ -16,7 +16,7 @@ export const CampaignProvider = ({ children }) => {
       if (resp.data && resp.data.ok) {
         let res = resp.data.msg;
         if(role === 1){
-          res.push({campaign_id: res.length});
+          res.push({campaign_id: res[res.length - 1]['campaign_id'] + 1});
         }
 
         setCampaigns(res);
@@ -57,7 +57,7 @@ export const CampaignProvider = ({ children }) => {
     }
   }
 
-    const getMeasures = async ()=>{
+  const getMeasures = async ()=>{
     try {
       const resp = await api.get('/candidate/measures');
       if(resp.data && resp.data.ok){
@@ -71,13 +71,43 @@ export const CampaignProvider = ({ children }) => {
     }
   }
 
+  const postCampaign = async (campaign)=>{
+    console.log(campaign);
+    
+    try {
+      const resp = await api.post('/campaign', campaign);
+      if(resp.data && resp.data.ok){
+        return {ok:true, msg: resp.data.msg}
+      }
+
+      return {ok:true, msg: 0}
+    } catch (error) {
+      console.error("Error post campaign:", error);
+      return { ok: false, msg: null };      
+    }
+  }
+
+  const postCandidates = async(candidate)=>{
+    try {
+      const resp = await api.post('/candidate', candidate);
+      if(resp.data && resp.data.ok){
+        return {ok:true, msg: []}
+      }
+    } catch (error) {
+      console.error("Error post candidate:", error);
+      return { ok: false, msg: null };
+    }
+  }
+
   return (
     <CampaignContext.Provider value={
       { 
         campaigns, getCampaigns, 
         engineers, getEngineers, 
         candidatePositions, getCandidatePositions,
-        measures, getMeasures
+        measures, getMeasures,
+        postCampaign,
+        postCandidates
       }
     }>
       {children}

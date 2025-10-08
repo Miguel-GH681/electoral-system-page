@@ -5,7 +5,7 @@ import styles from "../styles/styles.module.scss";
 
 const CreateCampaign = ()=>{
 
-  const { getEngineers, engineers, getCandidatePositions, candidatePositions, getMeasures, measures } = useContext(CampaignContext);
+  const { getEngineers, engineers, getCandidatePositions, candidatePositions, getMeasures, measures, postCampaign, postCandidates } = useContext(CampaignContext);
   
   const [diplomaDescription, setDiplomaDescription] = useState('');
   const [graduationYear, setGraduationYear] = useState(0);
@@ -16,6 +16,7 @@ const CreateCampaign = ()=>{
   const [position, setPosition] = useState(0);
   const [measure, setMeasure] =  useState(0);
   const [headerStatus, setHeaderStatus] = useState(false);
+  const [campaignId, setCampaignId ] = useState(0);
   const [campaingName, setCampaignName] = useState('');
   const [campaingDescription, setCampaignDescription] = useState('');
   const [campaingDuration, setCampaignDuration] = useState(0);
@@ -69,38 +70,54 @@ const CreateCampaign = ()=>{
     setDiplomaDescription('');
     setGraduationYear(0);
     setInstitution('')
-
-    console.log({diplomas: diplomas});
   }
 
-  const saveCampaignHeader = ()=>{
+  const saveCampaignHeader = async ()=>{
     if(campaingName === '' || campaingDescription === '' || campaingDuration === 0 || measure === 0){
       alert('Todos los campos son obligatorios')
       return ''
     }
 
-    console.log({measure});
+    let newCampaingId = await postCampaign({
+      'title': campaingName,
+      'description': campaingDescription,
+      'status': false,
+      'duration': campaingDuration,
+      'measure_id': measure
+    })
+    setCampaignId(newCampaingId);
     setHeaderStatus(true);
   }
 
-  const saveCandidate = ()=>{
+  const saveCandidate = async ()=>{
     if(engineer === 0 || position === 0 || candidateDescription === '' || candidatePhoto === ''){
       alert('Todos los campos son obligatorios')
       return ''
     }
 
-    setCandidates([
+    const newCandidate = [
       ...candidates,
       {
         'membership_number': engineer,
-        'campaign_id': 1,
+        'campaign_id': campaignId,
         'description': candidateDescription,
         'photo': candidatePhoto,
-        'candidate_position': position,
+        'candidate_position_id': position,
         'diplomas': diplomas
       }
-    ])
-    console.log({candidates});
+    ];
+
+    setCandidates(newCandidate);
+    await postCandidates(newCandidate);
+    cleanFields();    
+  }
+
+  const cleanFields = ()=>{
+    setDiplomas([]);
+    setEngineer(0)
+    setCandidateDescription('');
+    setCandidatePhoto('');
+    setPosition(0);
   }
 
   const handleMeasureChange = (e)=>{
@@ -356,7 +373,7 @@ const CreateCampaign = ()=>{
       }
 
       {
-        headerStatus ?
+        candidates.length > 0 ?
         <div>
           <br />
           <h3>Candidatos ingresados</h3>
@@ -375,8 +392,8 @@ const CreateCampaign = ()=>{
                 candidates.map((d, index) =>(
                   <tr key={index}>
                     <td>{d.membership_number}</td>
-                    <td>{engineers.find((e)=> e.membership_number === d.membership_number)['full_name']}</td>
-                    <td>{candidatePositions.find((p)=> p.position_id === d.candidate_position)['description']}</td>
+                    <td>{engineers.find((e)=> e.membership_number == d.membership_number)['full_name']}</td>
+                    <td>{candidatePositions.find((p)=> p.position_id == d.candidate_position)['description']}</td>
                     <td>{d.diplomas.length}</td>
                   </tr>
                 )) : null

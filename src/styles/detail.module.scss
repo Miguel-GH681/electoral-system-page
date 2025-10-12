@@ -1,0 +1,65 @@
+$primary: rgb(231, 187, 0);
+$primary-opaque: rgb(228, 201, 81); //rgb(231 187 0)
+$shadow-color: rgba(0,0,0, 0.1);
+$border-color: rgba(0,0,0, 0.1);
+
+*{
+    font-family: 'Poppins', sans-serif;
+}
+
+.title{
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.box{
+    // background-color: $primary;
+    margin-top: 20px;
+    height: 150px;
+    border: 1px solid $border-color;
+    box-shadow: 1px 3px 8px $shadow-color;
+    cursor: pointer;
+}
+
+.header-row{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    .data-rows{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+
+        p{
+            font-size: 20px;
+            margin: 0px;
+        }
+    }
+}
+
+.candidate-photo{
+    height: 230px;
+    overflow: hidden;
+
+    img{
+        border-radius: 5px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.candidate-data{
+    margin-top: 20px;
+}
+
+.candidate-box{
+    border: 1px solid $border-color;
+    box-shadow: 1px 3px 8px $shadow-color;
+    cursor: pointer;
+}

@@ -1,5 +1,8 @@
 import React, { createContext, useState, useEffect } from 'react';
 import api from '../axios';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+
 
 export const AuthContext = createContext(); //Investigar
 
@@ -25,8 +28,8 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
-    const register = async (membership_number, full_name, email, dpi, birthdate, password) =>{
-        const resp = await api.post('/users', {membership_number, full_name, email, dpi, birthdate: dateFormat(birthdate), password, role_id: 2});
+    const register = async (membership_number, full_name, email, dpi, birthdate, password) =>{        
+        const resp = await api.post('/users', {membership_number, full_name, email, dpi, birthdate: formatDateForBackend(birthdate), password, role_id: 2});
         if(resp.data && resp.data.ok){            
             return true
         } else{
@@ -36,7 +39,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (membershipNumber, dpi, birthdate, password) => {
         
-        const resp = await api.post('/users/login', { membership_number: membershipNumber, dpi, birthdate: dateFormat(birthdate), password });        
+        const resp = await api.post('/users/login', { membership_number: membershipNumber, dpi, birthdate: formatDateForBackend(birthdate), password });        
         if (resp.data && resp.data.ok) {
             const token = resp.data.token;
             const userData = resp.data.msg;
@@ -56,14 +59,17 @@ export const AuthProvider = ({ children }) => {
 
     const isAuthenticated = () => !!user;
 
-    const dateFormat = (fecha)=>{
-        const date = new Date(fecha);
-        const day = String(date.getDate() + 1).padStart(2, '0');
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const year = date.getFullYear();
+    function formatDateForBackend(inputDate) {
+        dayjs.extend(customParseFormat);
+        const date = dayjs(inputDate, ['DD/MM/YYYY', 'MM/DD/YYYY', 'YYYY-MM-DD'], true);
 
-        return `${year}-${month}-${day}`;
+        if (!date.isValid()) {
+            throw new Error('Fecha inválida');
+        }
+
+        return date.format('YYYY-MM-DD');
     }
+
 
     return (
         <AuthContext.Provider value={{ user, loading, login, logout, isAuthenticated, register }}>

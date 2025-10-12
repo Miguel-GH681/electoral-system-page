@@ -82,7 +82,7 @@ const CreateCampaign = ()=>{
     let newCampaingId = await postCampaign({
       'title': campaingName,
       'description': campaingDescription,
-      'status': false,
+      'campaign_state_id': 1,
       'duration': campaingDuration,
       'measure_id': measure,
       'votes': campaingVotes

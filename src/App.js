@@ -5,6 +5,7 @@ import { CampaignProvider } from './context/CampaignContext';
 import LoginPage from './pages/LoginPage';
 import AdminDashboard from './pages/Campaigns';
 import CreateCampaign from './pages/CampaignMaintenance';
+import CampaignDetail from './pages/CampaignDetail';
 import ProtectedRoute from './components/ProtectedRoute';
 import RegisterPage from './pages/RegisterPage';
 
@@ -46,6 +47,15 @@ function App() {
               element={
                 <ProtectedRoute allowedRole={1}>
                   <CreateCampaign />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route 
+              path='/campaigns/detail'
+              element={
+                <ProtectedRoute>
+                  <CampaignDetail />
                 </ProtectedRoute>
               }
             />

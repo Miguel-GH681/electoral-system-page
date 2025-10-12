@@ -45,7 +45,9 @@ const AdminDashboard = () => {
                 </Card>
               </Col> :
               <Col key={c.campaign_id}>
-                <Card className={styles.box}>
+                <Card className={styles.box} onClick={
+                  ()=>{navigate('/campaigns/detail')}
+                }>
                   <Card.Body className="d-flex flex-column align-items-center">
                     <GrBook size={25}/>
                     <b>{c.title}</b>

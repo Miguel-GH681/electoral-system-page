@@ -1,0 +1,24 @@
+.main-container{
+    height: 100vh;
+}
+
+.image-container{
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+
+    img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+.row{
+    display: flex;
+    height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+

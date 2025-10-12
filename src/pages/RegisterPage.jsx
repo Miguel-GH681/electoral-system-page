@@ -4,39 +4,35 @@ import { AuthContext } from '../context/AuthContext';
 import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
 import styles from "../styles/login.module.scss";
 
+const RegisterPage = ()=>{
 
-const LoginPage = () => {
     const [membershipNumber, setMembershipNumber] = useState('');
     const [dpi, setDpi] = useState('');
     const [birthdate, setBirthdate] = useState('');
     const [password, setPassword] = useState('');
-    const [error, setError] = useState(null);
+    const [email, setEmail] = useState('');
+    const [fullname, setFullname] = useState('');
+    const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const { login } = useContext(AuthContext);
+    const { register } = useContext(AuthContext);
     const navigate = useNavigate();
 
-
-    const handleSubmit = async (e) => {
-        e.preventDefault(); // investigar
-        setError(null);
-        setLoading(true);
+    const postUser = async ()=>{
         try {
-            const resp = await login(membershipNumber, dpi, birthdate, password);
-            if (resp.ok) {
-                navigate('/campaigns');
-            } else {
-                setError(resp.message || 'Credenciales inválidas');
+            const resp = await register(membershipNumber, fullname, email, dpi, birthdate, password);
+            
+            if(resp){
+                alert('Usuario creado con exito')
+                navigate('/login');
+            } else{
+                alert('intente registrarse nuevamente');
             }
-        } catch (err) {
-            console.error(err);
-            setError(err.response?.data?.msg || 'Error en el servidor');
-        } finally{
-            setLoading(false);
+        } catch (error) {
+            setError(error.response.data?.msg)
         }
-    };
+    }
 
-
-    return (
+    return <>
         <Row className={styles['main-container']}>
             <Col md={6}>
                 <div className={styles['image-container']}>
@@ -46,10 +42,10 @@ const LoginPage = () => {
             <Col md={6}>
                 <Row className={styles['row']}>
                     <Col md={10}>
-                        <Container className='d-flex justify-content-center mb-5'><h2>Iniciar sesión</h2></Container>
+                        <Container className='d-flex justify-content-center mb-5'><h2>Registro</h2></Container>
                         {error && <Alert variant="danger">{error}</Alert>}
-
-                        <Form onSubmit={handleSubmit}>
+            
+                        <Form>
                             <Form.Group className="mb-3" controlId="formMembershipNumber">
                                 <Form.Label>NÚMERO DE COLEGIADO</Form.Label>
                                 <Form.Control 
@@ -67,6 +63,26 @@ const LoginPage = () => {
                                     placeholder="1234567890101"
                                     value={ dpi }
                                     onChange={ (e) => setDpi(e.target.value)}
+                                />
+                            </Form.Group>
+
+                            <Form.Group className="mb-3" controlId="formFullname">
+                                <Form.Label>NOMBRE COMPLETO</Form.Label>
+                                <Form.Control 
+                                    type="text" 
+                                    placeholder="john doe"
+                                    value={ fullname }
+                                    onChange={ (e) => setFullname(e.target.value)}
+                                />
+                            </Form.Group>
+
+                            <Form.Group className="mb-3" controlId="formEmail">
+                                <Form.Label>CORREO ELECTRONICO</Form.Label>
+                                <Form.Control 
+                                    type="text" 
+                                    placeholder="john.doe@gmail.com"
+                                    value={ email }
+                                    onChange={ (e) => setEmail(e.target.value)}
                                 />
                             </Form.Group>
 
@@ -91,14 +107,14 @@ const LoginPage = () => {
                             <Row className='pt-4'>
                                 <Col>
                                     <Button variant='outline-warning' className="w-100" onClick={()=>{
-                                        navigate('/register')
+                                        navigate('/login')
                                     }}>
-                                        Registrar
+                                        Iniciar
                                     </Button>
                                 </Col>
                                 <Col>
-                                    <Button variant="warning" type="submit" disabled={loading || (!membershipNumber || !dpi || !birthdate || !password)} className="w-100">
-                                        {loading ? 'Ingresando...' : 'Ingresar'}
+                                    <Button variant="warning" disabled={loading || (!membershipNumber || !dpi || !birthdate || !password || !email || !fullname)} className="w-100" onClick={postUser}>
+                                        Guardar
                                     </Button>
                                 </Col>
                             </Row>
@@ -107,8 +123,7 @@ const LoginPage = () => {
                 </Row>
             </Col>
         </Row>
-    );
-};
+    </>
+}
 
-
-export default LoginPage;
+export default RegisterPage;

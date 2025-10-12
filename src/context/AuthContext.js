@@ -25,9 +25,18 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
+    const register = async (membership_number, full_name, email, dpi, birthdate, password) =>{
+        const resp = await api.post('/users', {membership_number, full_name, email, dpi, birthdate: dateFormat(birthdate), password, role_id: 2});
+        if(resp.data && resp.data.ok){            
+            return true
+        } else{
+            return false
+        }
+    }
+
     const login = async (membershipNumber, dpi, birthdate, password) => {
         
-        const resp = await api.post('/login', { membership_number: membershipNumber, dpi, birthdate, password });        
+        const resp = await api.post('/users/login', { membership_number: membershipNumber, dpi, birthdate: dateFormat(birthdate), password });        
         if (resp.data && resp.data.ok) {
             const token = resp.data.token;
             const userData = resp.data.msg;
@@ -47,8 +56,17 @@ export const AuthProvider = ({ children }) => {
 
     const isAuthenticated = () => !!user;
 
+    const dateFormat = (fecha)=>{
+        const date = new Date(fecha);
+        const day = String(date.getDate() + 1).padStart(2, '0');
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const year = date.getFullYear();
+
+        return `${year}-${month}-${day}`;
+    }
+
     return (
-        <AuthContext.Provider value={{ user, loading, login, logout, isAuthenticated }}>
+        <AuthContext.Provider value={{ user, loading, login, logout, isAuthenticated, register }}>
             {children}
         </AuthContext.Provider>
     );

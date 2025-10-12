@@ -6,6 +6,7 @@ import LoginPage from './pages/LoginPage';
 import AdminDashboard from './pages/Campaigns';
 import CreateCampaign from './pages/CampaignMaintenance';
 import ProtectedRoute from './components/ProtectedRoute';
+import RegisterPage from './pages/RegisterPage';
 
 
 function App() {
@@ -22,6 +23,13 @@ function App() {
             <Route 
               path="/login" 
               element={<LoginPage />} 
+            />
+
+            <Route 
+              path='/register'
+              element={
+                <RegisterPage></RegisterPage>
+              }
             />
 
             <Route

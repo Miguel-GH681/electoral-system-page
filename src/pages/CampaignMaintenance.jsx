@@ -20,6 +20,7 @@ const CreateCampaign = ()=>{
   const [campaingName, setCampaignName] = useState('');
   const [campaingDescription, setCampaignDescription] = useState('');
   const [campaingDuration, setCampaignDuration] = useState(0);
+  const [campaingVotes, setCampaingVotes] = useState(0);
   const [candidateDescription, setCandidateDescription] = useState('');
   const [candidatePhoto, setCandidatePhoto] = useState('');
   const [candidates, setCandidates] = useState([]);
@@ -83,7 +84,8 @@ const CreateCampaign = ()=>{
       'description': campaingDescription,
       'status': false,
       'duration': campaingDuration,
-      'measure_id': measure
+      'measure_id': measure,
+      'votes': campaingVotes
     })
     setCampaignId(newCampaingId);
     setHeaderStatus(true);
@@ -95,19 +97,17 @@ const CreateCampaign = ()=>{
       return ''
     }
 
-    const newCandidate = [
-      ...candidates,
-      {
-        'membership_number': engineer,
-        'campaign_id': campaignId,
-        'description': candidateDescription,
-        'photo': candidatePhoto,
-        'candidate_position_id': position,
-        'diplomas': diplomas
-      }
-    ];
+    const newCandidate = 
+    {
+      'membership_number': engineer,
+      'campaign_id': campaignId,
+      'description': candidateDescription,
+      'photo': candidatePhoto,
+      'candidate_position_id': position,
+      'diplomas': diplomas
+    }
 
-    setCandidates(newCandidate);
+    setCandidates([...candidates, newCandidate]);
     await postCandidates(newCandidate);
     cleanFields();    
   }
@@ -164,7 +164,7 @@ const CreateCampaign = ()=>{
                 </Form.Group>
               </Col>
             </Row>
-            <Row xs={1} md={2}>
+            <Row xs={1} md={3}>
               <Col>
                 <Form.Group className="mb-3">
                   <Form.Label>Medida</Form.Label>
@@ -187,6 +187,19 @@ const CreateCampaign = ()=>{
                     type="number" 
                     placeholder="Tiempo de duración" 
                     value={campaingDuration} onChange={(e)=> setCampaignDuration(e.target.value)}
+                    disabled={headerStatus}
+                  />
+                </Form.Group>
+              </Col>
+
+
+              <Col>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Votos</Form.Label>
+                  <Form.Control 
+                    type="number" 
+                    placeholder="Tiempo de duración" 
+                    value={campaingVotes} onChange={(e)=> setCampaingVotes(e.target.value)}
                     disabled={headerStatus}
                   />
                 </Form.Group>
@@ -393,7 +406,7 @@ const CreateCampaign = ()=>{
                   <tr key={index}>
                     <td>{d.membership_number}</td>
                     <td>{engineers.find((e)=> e.membership_number == d.membership_number)['full_name']}</td>
-                    <td>{candidatePositions.find((p)=> p.position_id == d.candidate_position)['description']}</td>
+                    <td>{candidatePositions.find((p)=> p.position_id == d.candidate_position_id)['description']}</td>
                     <td>{d.diplomas.length}</td>
                   </tr>
                 )) : null

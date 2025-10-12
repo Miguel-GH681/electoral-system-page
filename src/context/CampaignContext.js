@@ -16,7 +16,7 @@ export const CampaignProvider = ({ children }) => {
       if (resp.data && resp.data.ok) {
         let res = resp.data.msg;
         if(role === 1){
-          res.push({campaign_id: res[res.length - 1]['campaign_id'] + 1});
+          res.push({campaign_id: res.length > 0 ? (res[res.length - 1]['campaign_id'] + 1) : 0});
         }
 
         setCampaigns(res);
@@ -77,7 +77,7 @@ export const CampaignProvider = ({ children }) => {
     try {
       const resp = await api.post('/campaign', campaign);
       if(resp.data && resp.data.ok){
-        return {ok:true, msg: resp.data.msg}
+        return resp.data.msg
       }
 
       return {ok:true, msg: 0}

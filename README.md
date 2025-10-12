@@ -73,3 +73,7 @@ https://electoral-system.onrender.com
 
 #### Página web
 https://electoral-system-page.onrender.com
+
+
+#### Autor
+Alvaro Miguel González Hic - 9490224805

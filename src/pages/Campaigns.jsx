@@ -1,10 +1,8 @@
 import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { CampaignContext } from "../context/CampaignContext";
-import Card from 'react-bootstrap/Card';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import styles from "../styles/styles.module.scss";
+import {Card, Row, Col, Button, Container} from 'react-bootstrap';
+import styles from "../styles/campaign.module.scss";
 import { useNavigate } from 'react-router-dom';
 import { GrBook } from "react-icons/gr";
 import { FaPlus, FaVoteYea } from "react-icons/fa";
@@ -34,14 +32,27 @@ const AdminDashboard = () => {
   }
 
   return (
-    <div style={{ padding: 40 }}>
+    <Container fluid className={styles['maintenance-container']}>
+      <div className={styles['header']}>
+        <div className={styles['header-data']}>
+          <p className={styles['header-title']}>Campañas</p>
+          <p className={styles['header-description']}>Seleccione una campaña para realizar su votación.</p>
+        </div>
+
+        <div>
+          <Button className={styles['filter-button']}>Todas</Button>
+          <Button className={styles['filter-button']}>Activas</Button>
+          <Button className={styles['filter-button']}>Finalizadas</Button>
+        </div>
+      </div>
+
       {campaigns.length > 0 ? (
         <Row xs={1} md={2} lg={3}>
           {campaigns.map((c, index) => (
               index === (campaigns.length - 1) ?
               <Col key={c.campaign_id}>
                 <Card className={styles['box-creation']} onClick={createCampaign}>    
-                  <FaPlus color="white" size={40}/>                  
+                  <FaPlus size={40} className={styles['icon']}/>                  
                 </Card>
               </Col> :
               <Col key={c.campaign_id}>
@@ -67,6 +78,11 @@ const AdminDashboard = () => {
                         <p>10</p>
                       </Col>
                     </Row>
+                    <Row>
+                      <button>
+                        Ver detalle
+                      </button>
+                    </Row>
                   </Card.Body>
                 </Card>
               </Col>
@@ -76,7 +92,7 @@ const AdminDashboard = () => {
       : (
         <p>No hay campañas disponibles.</p>
       )}
-    </div>
+    </Container>
   );
 };
 

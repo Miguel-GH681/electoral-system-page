@@ -1,0 +1,163 @@
+@use './variables' as v;
+
+.box{
+    margin-top: 50px;
+    height: 300px;
+    border: v.$border;
+    box-shadow: v.$shadow;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+
+    b{
+        margin-top: 5px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    p{
+        margin-top: 5px;
+        text-align: center;
+        color: v.$primary-text;
+        font-size: 13px;
+    }
+
+    hr{
+        width: 80%;
+    }
+
+    &:hover{
+        transform: scale(1.02);
+    }    
+}
+
+.box-creation{
+    margin-top: 50px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: v.$shadow;
+    border: v.$border;
+
+    .icon{
+        color: v.$primary
+    }
+}
+
+.form-card{
+    border: v.$border;
+    box-shadow: v.$shadow;
+}
+
+.maintenance-container{
+    padding: 20px 30px;
+}
+
+.text-container{
+    margin-top: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.item-row{
+    width: 80%;
+}
+
+.item-col{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.5rem;
+
+    p{
+        margin: 0;
+    }
+}
+
+.header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 25px;
+
+    .filter-button{
+        margin-left: 15px;
+        height: 50px;
+        width: 170px;
+        background-color: white;
+        border: v.$border;
+        color: v.$primary;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+
+    .filter-button-selected{
+        margin-left: 15px;
+        height: 50px;
+        width: 170px;
+        background-color: v.$primary;
+        border: v.$border;
+        color: white;
+        font-weight: bold;
+        border-radius: 5px;
+    }
+
+    .header-data{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .header-title{
+            font-size: 35px;
+            font-weight: 600;
+            color: v.$primary-text
+        }
+
+        .header-description{
+            font-size: 20px;
+            color: v.$secondary-text;
+            text-align: center;
+        }
+    }
+}
+
+.filter-button{
+    margin-left: 15px;
+    height: 50px;
+    width: 170px;
+    background-color: white;
+    border: v.$border;
+    color: v.$primary;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.filter-button-selected{
+    margin-left: 15px;
+    height: 50px;
+    width: 170px;
+    background-color: v.$primary;
+    border: v.$border;
+    color: white;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.filter-title{
+    padding: 0;
+    margin: 0;
+    font-size: 30px;
+    font-weight: bold;
+    color: v.$primary-text
+}
+
+.graph-container{
+    margin-top: 50px;
+}

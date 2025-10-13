@@ -9,7 +9,6 @@ export const CampaignProvider = ({ children }) => {
   const [candidatePositions, setCandidatePositions] = useState([]);
   const [measures, setMeasures] = useState([]);
 
-
   const getCampaigns = async (role) => {    
     try {
       const resp = await api.get('/campaign');
@@ -99,6 +98,18 @@ export const CampaignProvider = ({ children }) => {
     }
   }
 
+  const getCampaignDetail = async(campaignId)=>{
+    try {
+      const resp = await api.get('/campaign/' + campaignId);
+      if(resp.data && resp.data.ok){
+        return resp.data.msg
+      }
+    } catch (error) {
+      console.error("Error getDetailCampaign:", error);
+      return { ok: false, msg: null };
+    }
+  }
+
   return (
     <CampaignContext.Provider value={
       { 
@@ -107,7 +118,8 @@ export const CampaignProvider = ({ children }) => {
         candidatePositions, getCandidatePositions,
         measures, getMeasures,
         postCampaign,
-        postCandidates
+        postCandidates,
+        getCampaignDetail
       }
     }>
       {children}

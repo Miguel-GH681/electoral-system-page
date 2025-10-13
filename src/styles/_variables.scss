@@ -1,0 +1,11 @@
+// $primary: rgb(231, 187, 0);
+$primary: rgb(64, 109, 168);
+$primary-text: rgb(63, 63, 63);
+$secondary-text: rgb(110, 110, 110);
+$tertiary-text: rgba(0,0,0, 0.1);
+$white: #ffffff;
+$gray-light: #d0d3df;
+
+$shadow: 0px 0px 12px $tertiary-text;
+$border: 1px solid $tertiary-text;
+$background: linear-gradient(180deg, $white, $gray-light);

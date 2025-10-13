@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { CampaignContext } from "../context/CampaignContext";
 import { Card, CardBody, Container, Form, Button, Row, Col, Table } from "react-bootstrap";
-import styles from "../styles/styles.module.scss";
+import styles from "../styles/campaign.module.scss";
 
 const CreateCampaign = ()=>{
 

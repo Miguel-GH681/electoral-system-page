@@ -1,7 +1,4 @@
-$primary: rgb(231, 187, 0);
-$primary-opaque: rgb(228, 201, 81); //rgb(231 187 0)
-$shadow-color: rgba(0,0,0, 0.1);
-$border-color: rgba(0,0,0, 0.1);
+@use './variables' as v;
 
 *{
     font-family: 'Poppins', sans-serif;
@@ -10,14 +7,18 @@ $border-color: rgba(0,0,0, 0.1);
 .title{
     font-size: 30px;
     font-weight: 700;
+    color: v.$primary-text
+}
+
+.description{
+    color: v.$secondary-text
 }
 
 .box{
-    // background-color: $primary;
     margin-top: 20px;
-    height: 150px;
-    border: 1px solid $border-color;
-    box-shadow: 1px 3px 8px $shadow-color;
+    height: 120px;
+    border: v.$border;
+    box-shadow: v.$shadow;
     cursor: pointer;
 }
 
@@ -56,10 +57,16 @@ $border-color: rgba(0,0,0, 0.1);
 
 .candidate-data{
     margin-top: 20px;
+
+    .name{
+        font-size: 20px;
+        font-weight: bold;
+    }
 }
 
 .candidate-box{
-    border: 1px solid $border-color;
-    box-shadow: 1px 3px 8px $shadow-color;
+    margin-top: 30px;
+    border: v.$border;
+    box-shadow: v.$shadow;
     cursor: pointer;
 }

@@ -1,12 +1,24 @@
-$primary: rgb(231, 187, 0);  //rgb(231 187 0)
-$shadow-color: rgba(0,0,0,0.3);
+@use './variables' as v;
 
 .navbar{
-    background-color: $primary;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 60px;
+    height: 65px;
     padding-left: 20px;
     padding-right: 20px;
+    box-shadow: v.$shadow;
+    border-bottom: v.$border;
+    
+    h2{
+        margin: 0;
+        padding: 0;
+        font-size: 30px;
+        font-weight: 600;
+        color: v.$primary-text;
+    }
+
+    .icon{
+        color: v.$primary-text;
+    }
 }

@@ -49,7 +49,7 @@ const AdminDashboard = () => {
       {campaigns.length > 0 ? (
         <Row xs={1} md={2} lg={3}>
           {campaigns.map((c, index) => (
-              index === (campaigns.length - 1) ?
+              c['campaign_id'] === 0 ?
               <Col key={c.campaign_id}>
                 <Card className={styles['box-creation']} onClick={createCampaign}>    
                   <FaPlus size={40} className={styles['icon']}/>                  

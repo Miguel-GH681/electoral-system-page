@@ -57,6 +57,9 @@
 
 .candidate-data{
     margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 
     .name{
         font-size: 20px;

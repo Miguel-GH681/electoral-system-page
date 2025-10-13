@@ -1,19 +1,22 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { CampaignContext } from "../context/CampaignContext";
-import { Card, CardBody, Container, ButtonGroup, Button, Row, Col, Table } from "react-bootstrap";
+import { Card, CardBody, Container, Button, Row, Col } from "react-bootstrap";
 import styles from "../styles/campaign.module.scss";
 import detailStyles from '../styles/detail.module.scss'
 import { BsFillPeopleFill } from "react-icons/bs";
 import { FaVoteYea, FaCheckCircle  } from "react-icons/fa";
 import ReactApexChart from 'react-apexcharts';
+import { VoteSocket } from '../hooks/VoteSocket';
 
 const CampaignDetail = ()=>{
     const { getCampaignDetail, getCandidatePositions, candidatePositions } = useContext(CampaignContext);
     const [header, setHeader] = useState({title: '', description: ''})
     const [positions, setPositions] = useState([]);
     const [positionSelected, setPositionSelected] = useState(0);
-    const [candidatesFiltered, setCandidatesFiltered] = useState([]);
     const [candidates, setCandidates] = useState([]);
+    const socket = VoteSocket("http://localhost:3000", localStorage.getItem("token"));
+    const candidatesRef = useRef();
+    candidatesRef.current = candidates;
 
     useEffect(() => {
         const fetchCampaignDetail = async () => {
@@ -23,7 +26,6 @@ const CampaignDetail = ()=>{
             setHeader(resp['campaign']);
             setCandidates(resp['candidates']);
             positionsFiltered(resp['candidates']);
-            changeFilter(resp['candidates'], 0)
           } catch (err) {
             console.error("Error al obtener campañas:", err);
           }
@@ -32,18 +34,53 @@ const CampaignDetail = ()=>{
         fetchCampaignDetail();
     }, []);
 
+    useEffect(() =>{
+        if(!socket){
+            return
+        }
+
+        socket.on('vote', (payload) => {
+            const updated = candidatesRef.current.map((cr) => {
+                if (cr.membership_number === payload.candidate_id) {
+                return { ...cr, votes: cr.votes + 1 };
+                }
+                return cr;
+            });
+
+            candidatesRef.current = updated;
+            setCandidates(updated);
+        });
+
+
+        return ()=>{
+            socket.off('vote');
+        }
+    }, [socket])
+
     const positionsFiltered = (c)=>{
+        let pos = [];
+
         c.forEach((d)=>{
-            if(!positions.find(p => p === d.candidate_position_id)){
-                positions.push(d.candidate_position_id);
+            if(!pos.find(p => p === d.candidate_position_id)){
+                pos.push(d.candidate_position_id);
             }
         });
+        setPositions(pos);
+        setPositionSelected(pos[0]);
     }
 
-    const changeFilter = (data, index) =>{ 
-        let candidateFiltered = data.filter((d) => d.candidate_position_id === positions[index]);        
-        setCandidatesFiltered(candidateFiltered);
-        setPositionSelected(index);
+    const sendVote = (candidate_id)=>{
+        let userData = JSON.parse(localStorage.getItem('user'));
+
+        if(!socket){
+            return
+        }
+
+        socket.emit('vote', {
+            candidate_id,
+            voter_id: userData['membership_number'],
+            vote_date: new Date()
+        });
     }
 
     const options = {
@@ -52,7 +89,7 @@ const CampaignDetail = ()=>{
         toolbar: { show: true }, // Muestra el toolbar con opciones
         },
         xaxis: {
-        categories: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'], // Etiquetas del eje X
+        categories: candidates.filter(c => c.candidate_position_id == positionSelected).map((c) => c.full_name), // Etiquetas del eje X
         },
         title: {
         text: 'Votaciones por candidato',
@@ -69,7 +106,7 @@ const CampaignDetail = ()=>{
     const series = [
         {
         name: 'Ventas',
-        data: [400, 300, 500, 200, 600], // Valores de cada barra
+        data: candidates.filter(c => c.candidate_position_id == positionSelected).map(c => c.votes), // Valores de cada barra
         },
     ];
 
@@ -140,14 +177,14 @@ const CampaignDetail = ()=>{
                             positions.map((p, index)=>(
                                 <button key={index}  
                                 className={
-                                    positionSelected == index ?
+                                    positionSelected == p ?
                                     styles['filter-button-selected'] :
                                     styles['filter-button']
                                 } 
                                 onClick={()=>{
-                                    changeFilter(candidates, index);
+                                    setPositionSelected(p)
                                 }}>
-                                    {candidatePositions.find(cp => cp['position_id'] === p)['description']}
+                                    { candidatePositions.find((cp) => cp['position_id'] == p)['description'] }
                                 </button>
                             ))
                         }
@@ -156,33 +193,37 @@ const CampaignDetail = ()=>{
             </Row>
 
             <Row>
-                    {
-                        candidatesFiltered.map((d, index)=>(
-                            <Col key={index} lg={4} md={6} xs={12}>
-                                <Card className={detailStyles['candidate-box']}>
-                                    <CardBody>
-                                        <Row>
-                                            <Col xxl={4} className={detailStyles['candidate-photo']}>
-                                                <img src={d.photo} alt="" height={200}/>
-                                            </Col>
-                                            <Col xxl={8} className={detailStyles['candidate-data']}>
-                                                <p className={detailStyles['name']}>{d.full_name}</p>
-                                                <p>{d.description}</p>
-                                                <div>
-                                                    <div xs={6}>
-                                                        <p>Email: {d.email}</p>
-                                                    </div>
-                                                    <div xs={6}>
-                                                        <p>Edad: 26 anios</p>
-                                                    </div>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                    </CardBody>
-                                </Card>
-                            </Col>
-                        ))
-                    }
+                {
+                candidates
+                    .filter(d => d.candidate_position_id === positionSelected)
+                    .map((d, index) => (
+                        <Col key={index} lg={4} md={6} xs={12}>
+                        <Card className={detailStyles['candidate-box']}>
+                            <CardBody>
+                            <Row>
+                                <Col xxl={4} className={detailStyles['candidate-photo']}>
+                                <img src={d.photo} alt={d.full_name} height={200} />
+                                </Col>
+                                <Col xxl={8} className={detailStyles['candidate-data']}>
+                                <p className={detailStyles['name']}>{d.full_name}</p>
+                                <p>{d.description}</p>
+                                <p>Email: {d.email}</p>
+                                <hr />
+                                <div>
+                                    <button
+                                    className={styles['filter-button']}
+                                    onClick={() => sendVote(d.membership_number)}
+                                    >
+                                    Votar
+                                    </button>
+                                </div>
+                                </Col>
+                            </Row>
+                            </CardBody>
+                        </Card>
+                        </Col>
+                    ))
+                }
             </Row>
 
             <Row className={styles['graph-container']}>

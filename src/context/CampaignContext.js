@@ -15,7 +15,7 @@ export const CampaignProvider = ({ children }) => {
       if (resp.data && resp.data.ok) {
         let res = resp.data.msg;
         if(role === 1){
-          res.push({campaign_id: res.length > 0 ? (res[res.length - 1]['campaign_id'] + 1) : 0});
+          res.push({campaign_id: 0});
         }
 
         setCampaigns(res);

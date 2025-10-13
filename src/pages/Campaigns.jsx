@@ -1,12 +1,13 @@
-import React, { useContext, useEffect } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { CampaignContext } from "../context/CampaignContext";
-import {Card, Row, Col, Button, Container} from 'react-bootstrap';
-import styles from "../styles/campaign.module.scss";
-import { useNavigate } from 'react-router-dom';
-import { GrBook } from "react-icons/gr";
+import { Card, Row, Col, Button, Container } from 'react-bootstrap';
+import { useContext, useEffect } from "react";
 import { FaPlus, FaVoteYea } from "react-icons/fa";
 import { BsFillPeopleFill } from "react-icons/bs";
+import { GrBook } from "react-icons/gr";
+
+import { CampaignContext } from "../context/CampaignContext";
+import { AuthContext } from "../context/AuthContext";
+import styles from "../styles/campaign.module.scss";
+import { useNavigate } from 'react-router-dom';
 
 
 const AdminDashboard = () => {
@@ -28,7 +29,7 @@ const AdminDashboard = () => {
   }, []);
 
   const createCampaign = ()=>{
-    navigate('/campaigns/maintenance')
+    navigate('/campaigns/maintenance');
   }
 
   return (
@@ -47,8 +48,9 @@ const AdminDashboard = () => {
       </div>
 
       {campaigns.length > 0 ? (
-        <Row xs={1} md={2} lg={3}>
-          {campaigns.map((c, index) => (
+        <Row xs={1} md={2} lg={3} xl={4}>
+          {
+            campaigns.map((c, index) => (
               c['campaign_id'] === 0 ?
               <Col key={c.campaign_id}>
                 <Card className={styles['box-creation']} onClick={createCampaign}>    
@@ -56,37 +58,40 @@ const AdminDashboard = () => {
                 </Card>
               </Col> :
               <Col key={c.campaign_id}>
-                <Card className={styles.box} onClick={
-                  ()=>{navigate('/campaigns/detail')}
-                }>
-                  <Card.Body className="d-flex flex-column align-items-center">
-                    <GrBook size={25}/>
-                    <b>{c.title}</b>
-                    <hr />
-                    <div className={styles['text-container']}>
-                      <p>{c.description}</p>
-                    </div>
+                <Card className={styles.box}>
+                  <Card.Body className="d-flex flex-column align-items-center justify-content-around">
+                    <Row className={styles['header-box']}>
+                      <GrBook size={25}/>
+                      <b className={styles['box-title']}>{c.title}</b>
+                      <hr />
+                      <div className={styles['box-description']}>
+                        <p>{c.description}</p>
+                      </div>
+                    </Row>
                     <Row className={styles['item-row']}>
                       <Col className={styles['item-col']}>
                         <BsFillPeopleFill />
                         <p>Candidatos</p>
-                        <p>10</p>
+                        <p>{c.candidates}</p>
                       </Col>
                       <Col className={styles['item-col']}>
                         <FaVoteYea />
                         <p>Votos</p>
-                        <p>10</p>
+                        <p>{c.votes}</p>
                       </Col>
                     </Row>
-                    <Row>
-                      <button>
+                    <Row className={styles['box-button']}>
+                      <button onClick={
+                        ()=>{navigate('/campaigns/detail')}
+                      }>
                         Ver detalle
                       </button>
                     </Row>
                   </Card.Body>
                 </Card>
               </Col>
-          ))}
+            ))
+          }
         </Row>
       ) 
       : (

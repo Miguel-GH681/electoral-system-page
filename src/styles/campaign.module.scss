@@ -2,11 +2,9 @@
 
 .box{
     margin-top: 50px;
-    height: 300px;
+    height: 270px;
     border: v.$border;
     box-shadow: v.$shadow;
-    cursor: pointer;
-    transition: transform 0.3s ease;
 
     b{
         margin-top: 5px;
@@ -22,18 +20,62 @@
         font-size: 13px;
     }
 
-    hr{
+    .header-box{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        hr{
+            margin: 10px;
+            width: 80%;
+        }
+    }
+
+    .box-title{
+        font-size: 15px;
+    }
+
+    .box-description{
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .item-row{
         width: 80%;
     }
 
-    &:hover{
-        transform: scale(1.02);
-    }    
+    .item-col{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin-top: 1.5rem;
+
+        p{
+            margin: 0;
+        }
+    }
+
+    .box-button{
+        margin-top: 10px;
+        width: 100%;
+
+        button{
+            border-radius: 5px;
+            border: 1px solid v.$primary;
+            background-color: v.$primary;
+            color: v.$white;
+            font-size: 15px;
+        }
+    }
 }
 
 .box-creation{
     margin-top: 50px;
-    height: 300px;
+    height: 270px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -52,32 +94,7 @@
 }
 
 .maintenance-container{
-    padding: 20px 30px;
-}
-
-.text-container{
-    margin-top: 0.5rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.item-row{
-    width: 80%;
-}
-
-.item-col{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 1.5rem;
-
-    p{
-        margin: 0;
-    }
+    padding: 20px 60px;
 }
 
 .header{
@@ -88,8 +105,8 @@
 
     .filter-button{
         margin-left: 15px;
-        height: 50px;
-        width: 170px;
+        height: 40px;
+        width: 150px;
         background-color: white;
         border: v.$border;
         color: v.$primary;
@@ -115,13 +132,13 @@
         align-items: center;
 
         .header-title{
-            font-size: 35px;
+            font-size: 30px;
             font-weight: 600;
             color: v.$primary-text
         }
 
         .header-description{
-            font-size: 20px;
+            font-size: 15px;
             color: v.$secondary-text;
             text-align: center;
         }
@@ -130,8 +147,8 @@
 
 .filter-button{
     margin-left: 15px;
-    height: 50px;
-    width: 170px;
+    height: 40px;
+    width: 150px;
     background-color: white;
     border: v.$border;
     color: v.$primary;
@@ -141,21 +158,13 @@
 
 .filter-button-selected{
     margin-left: 15px;
-    height: 50px;
-    width: 170px;
+    height: 40px;
+    width: 150px;
     background-color: v.$primary;
     border: v.$border;
     color: white;
     font-weight: bold;
     border-radius: 5px;
-}
-
-.filter-title{
-    padding: 0;
-    margin: 0;
-    font-size: 30px;
-    font-weight: bold;
-    color: v.$primary-text
 }
 
 .graph-container{

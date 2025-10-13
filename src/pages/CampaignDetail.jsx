@@ -86,10 +86,10 @@ const CampaignDetail = ()=>{
     const options = {
         chart: {
         id: 'ventas-bar-chart',
-        toolbar: { show: true }, // Muestra el toolbar con opciones
+        toolbar: { show: false },
         },
         xaxis: {
-        categories: candidates.filter(c => c.candidate_position_id == positionSelected).map((c) => c.full_name), // Etiquetas del eje X
+        categories: candidates.filter(c => c.candidate_position_id == positionSelected).map((c) => c.full_name),
         },
         title: {
         text: 'Votaciones por candidato',
@@ -100,15 +100,39 @@ const CampaignDetail = ()=>{
             color: '#333',
         },
         },
-        colors: ['#406da8'], // Color de las barras
+        colors: ['#406da8'],
     };
 
     const series = [
         {
-        name: 'Ventas',
-        data: candidates.filter(c => c.candidate_position_id == positionSelected).map(c => c.votes), // Valores de cada barra
+        name: 'Votos',
+        data: candidates.filter(c => c.candidate_position_id == positionSelected).map(c => c.votes),
         },
     ];
+
+
+      const series1 = [70, 30]; // [votos emitidos, votos faltantes]
+
+    const options1 = {
+        labels: ["Votos Emitidos", "Votos Faltantes"],
+        chart: {
+            type: "donut",
+        },
+        dataLabels: {
+            enabled: true,
+            formatter: (val) => `${val.toFixed(1)}%`,
+        },
+        legend: {
+            position: "bottom",
+        },
+        plotOptions: {
+            pie: {
+                donut: {
+                size: "60%", // Puedes quitarlo si quieres pie normal
+                },
+            },
+        },
+    };
 
     return <>
         <Container fluid className={styles['maintenance-container']}>
@@ -119,58 +143,10 @@ const CampaignDetail = ()=>{
                 </div>
             </div>
 
-            <Row>
-                <Col lg={4}>
-                    <Card className={detailStyles['box']}>
-                        <CardBody>
-                            <div className={detailStyles['header-row']}>
-                                <div className={[detailStyles['data-rows']]}>
-                                    <p>Candidatos</p>
-                                    <p>20</p>
-                                </div>
-                                <div>
-                                    <BsFillPeopleFill size={75}/>
-                                </div>
-                            </div>
-                        </CardBody>
-                    </Card>
-                </Col>
-                <Col lg={4}>
-                    <Card className={detailStyles.box}>
-                        <CardBody>
-                            <div className={detailStyles['header-row']}>
-                                <div className={[detailStyles['data-rows']]}>
-                                    <p>Votos</p>
-                                    <p>20</p>
-                                </div>
-                                <div>
-                                    <FaVoteYea size={75}/>
-                                </div>
-                            </div>
-                        </CardBody>
-                    </Card>
-                </Col>
-                <Col lg={4}>
-                    <Card className={detailStyles.box}>
-                        <CardBody>
-                            <div className={detailStyles['header-row']}>
-                                <div className={[detailStyles['data-rows']]}>
-                                    <p>Votos restantes</p>
-                                    <p>2</p>
-                                </div>
-                                <div>
-                                    <FaCheckCircle size={75}/>
-                                </div>
-                            </div>
-                        </CardBody>
-                    </Card>
-                </Col>
-            </Row>
-
             <Row className="mt-5">
                 <Col className="d-flex justify-content-between">
                     <div>
-                        <p className={styles['filter-title']}>Candidatos</p>
+                        <p className={detailStyles['filter-title']}>Candidatos</p>
                     </div>
                     <div>
                         {
@@ -192,43 +168,64 @@ const CampaignDetail = ()=>{
                 </Col>
             </Row>
 
-            <Row>
+            <Row xs={1} md={2} lg={3}>
                 {
                 candidates
                     .filter(d => d.candidate_position_id === positionSelected)
                     .map((d, index) => (
-                        <Col key={index} lg={4} md={6} xs={12}>
-                        <Card className={detailStyles['candidate-box']}>
-                            <CardBody>
-                            <Row>
-                                <Col xxl={4} className={detailStyles['candidate-photo']}>
-                                <img src={d.photo} alt={d.full_name} height={200} />
-                                </Col>
-                                <Col xxl={8} className={detailStyles['candidate-data']}>
-                                <p className={detailStyles['name']}>{d.full_name}</p>
-                                <p>{d.description}</p>
-                                <p>Email: {d.email}</p>
-                                <hr />
-                                <div>
-                                    <button
-                                    className={styles['filter-button']}
-                                    onClick={() => sendVote(d.membership_number)}
-                                    >
-                                    Votar
-                                    </button>
-                                </div>
-                                </Col>
-                            </Row>
-                            </CardBody>
-                        </Card>
+                        <Col key={index}>
+                            <Card className={detailStyles['candidate-box']}>
+                                <CardBody>
+                                    <Row>
+                                        <Col xs={12} sm={5} className={detailStyles['candidate-photo']}>
+                                            <img src={d.photo} alt={d.full_name} height={200} />
+                                        </Col>
+                                        <Col xs={12} sm={7} className={detailStyles['candidate-data']}>
+                                            <div>
+                                                <p className={detailStyles['name']}>{d.full_name}</p>
+                                                <hr />
+                                                <p>{d.description}</p>
+                                                <p>{d.email}</p>
+                                                <p>{d.birthdate}</p>  
+                                            </div>
+                                            <div>
+                                                <button
+                                                className={styles['box-button']}
+                                                onClick={() => sendVote(d.membership_number)}
+                                                >
+                                                Votar
+                                                </button>
+                                            </div>
+                                        </Col>
+                                    </Row>
+                                </CardBody>
+                            </Card>
                         </Col>
                     ))
                 }
             </Row>
 
-            <Row className={styles['graph-container']}>
-                <ReactApexChart options={options} series={series} type="bar" height={350} />
+            <Row className="mt-5">
+                <Col className="d-flex justify-content-between">
+                    <div>
+                        <p className={detailStyles['filter-title']}>Estadísticas</p>
+                    </div>
+                </Col>
             </Row>
+            <div >
+                <Card className={detailStyles['graph-container']}>
+                    <CardBody>
+                        <Row>
+                            <Col>
+                                <ReactApexChart options={options} series={series} type="bar" height={350} />
+                            </Col>
+                            <Col>
+                                <ReactApexChart options={options1} series={series1} type="donut" height={350} />
+                            </Col>
+                        </Row>
+                    </CardBody>
+                </Card>
+            </div>
         </Container>   
     </>
 }

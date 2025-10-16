@@ -17,7 +17,7 @@ const LoginPage = () => {
 
 
     const handleSubmit = async (e) => {
-        e.preventDefault(); // investigar
+        e.preventDefault();
         setError(null);
         setLoading(true);
         try {

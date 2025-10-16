@@ -22,7 +22,7 @@ const CampaignDetail = ()=>{
         const fetchCampaignDetail = async () => {
           try {
             await getCandidatePositions();
-            let resp = await getCampaignDetail(1);//obtener id dinamico
+            let resp = await getCampaignDetail(1);
             setHeader(resp['campaign']);
             setCandidates(resp['candidates']);
             positionsFiltered(resp['candidates']);
@@ -111,7 +111,7 @@ const CampaignDetail = ()=>{
     ];
 
 
-      const series1 = [70, 30]; // [votos emitidos, votos faltantes]
+      const series1 = [70, 30];
 
     const options1 = {
         labels: ["Votos Emitidos", "Votos Faltantes"],
@@ -128,7 +128,7 @@ const CampaignDetail = ()=>{
         plotOptions: {
             pie: {
                 donut: {
-                size: "60%", // Puedes quitarlo si quieres pie normal
+                size: "60%",
                 },
             },
         },

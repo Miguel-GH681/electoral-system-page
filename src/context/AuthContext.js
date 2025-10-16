@@ -11,7 +11,6 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Al montar, intenta cargar sesión desde localStorage
         const token = localStorage.getItem('token');
         const userStr = localStorage.getItem('user');
         if (token && userStr) {

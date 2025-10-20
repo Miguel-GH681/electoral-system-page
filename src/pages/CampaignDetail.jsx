@@ -179,7 +179,7 @@ const CampaignDetail = ()=>{
                 </Col>
             </Row>
 
-            <Row xs={1} md={2} lg={4}>
+            <Row xs={1} md={2} xl={3}>
                 {
                 candidates
                     .filter(d => d.candidate_position_id === positionSelected)
@@ -188,16 +188,20 @@ const CampaignDetail = ()=>{
                             <Card className={detailStyles['candidate-box']}>
                                 <CardBody>
                                     <Row>
-                                        <Col xs={12} sm={5} className={detailStyles['candidate-photo']}>
-                                            <img src={d.photo} alt={d.full_name} height={200} />
+                                        <Col xs={12}  sm={5} className={detailStyles['candidate-photo']}>
+                                            <img src={d.photo} alt={d.full_name} />
                                         </Col>
-                                        <Col xs={12} sm={7} className={detailStyles['candidate-data']}>
-                                            <div>
-                                                <p className={detailStyles['name']}>{d.full_name}</p>
-                                                <hr />
-                                                <p>{d.description}</p>
-                                                <p>{d.email}</p>
-                                                <p>{d.birthdate}</p>  
+                                        <Col xs={12} sm={7} >
+                                            <div className={detailStyles['candidate-data']}>
+                                                <div className={detailStyles['candidate-data-header']}>
+                                                    <p>{d.full_name}</p>
+                                                    <hr />
+                                                </div>
+                                                <div className={detailStyles['candidate-data-body']}>
+                                                    <p>{d.description}</p>
+                                                    <p>{d.email}</p>
+                                                    <p>{d.birthdate}</p>  
+                                                </div>
                                             </div>
                                             <div>
                                                 <button

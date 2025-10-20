@@ -51,10 +51,10 @@
     border: v.$border;
     box-shadow: v.$shadow;
 
-    .candidate-photo{
+    .candidate-photo {
         overflow: hidden;
 
-        img{
+        img {
             border-radius: 5px;
             width: 100%;
             height: 100%;
@@ -62,37 +62,51 @@
         }
     }
 
+    @media (max-width: 870px) {
+        .candidate-photo{
+            display: flex;
+            justify-content: center;
+            margin-bottom: 15px;
+
+            img {
+                width: 220px;
+                height: auto;
+            }
+        }
+    }
+
     .candidate-data{
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
+        font-size: 15px;
+        color: v.$primary-text;
 
-        p{
-            margin: 0px;
-            padding: 0px;
-            color: v.$primary-text;
-            font-size: 12px;
-        }
-
-        hr{
-            margin-top: 10px;
-            margin-bottom: 10px;
-        }
-
-        .name{
-            font-size: 16px;
-            color: v.$primary-text;
+        .candidate-data-header{
             font-weight: bold;
+            font-size: 18px;
         }
 
-        button{
-            border-radius: 5px;
-            border: 1px solid v.$primary;
-            background-color: v.$primary;
-            color: v.$white;
-            width: 100%;
-            font-size: 15px;
+        .candidate-data-body{
+            word-wrap: break-word; 
+            overflow: hidden;
+            height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            align-items: start;
+            font-size: 13px;
+            p{
+                margin: 0;
+                padding: 0;
+            }
         }
+    }
+
+    button{
+        border-radius: 5px;
+        border: 1px solid v.$primary;
+        background-color: v.$primary;
+        color: v.$white;
+        width: 100%;
+        font-size: 15px;
     }
 }
 

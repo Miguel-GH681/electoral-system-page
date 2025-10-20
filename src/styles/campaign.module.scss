@@ -2,9 +2,10 @@
 
 .box{
     margin-top: 50px;
-    height: 270px;
+    height: 330px;
     border: v.$border;
     box-shadow: v.$shadow;
+    padding: 10px 25px;
 
     b{
         margin-top: 5px;
@@ -37,7 +38,7 @@
 
     .box-description{
         display: -webkit-box;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -69,13 +70,14 @@
             background-color: v.$primary;
             color: v.$white;
             font-size: 15px;
+            height: 35px;
         }
     }
 }
 
 .box-creation{
     margin-top: 50px;
-    height: 270px;
+    height: 330px;
     display: flex;
     justify-content: center;
     align-items: center;

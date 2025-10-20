@@ -7,6 +7,7 @@ export const CampaignProvider = ({ children }) => {
   const [campaigns, setCampaigns] = useState([]);
   const [engineers, setEngineers] = useState([]);
   const [candidatePositions, setCandidatePositions] = useState([]);
+  const [campaignState, setCampaignState] = useState([]);
   const [measures, setMeasures] = useState([]);
 
   const getCampaigns = async (role) => {    
@@ -15,11 +16,11 @@ export const CampaignProvider = ({ children }) => {
       if (resp.data && resp.data.ok) {
         let res = resp.data.msg;
         if(role === 1){
-          res.push({campaign_id: 0});
+          res.push({campaign_id: 0, campaign_state_id: 1});
         }
 
         setCampaigns(res);
-        return { ok: true, msg: resp.data.msg };
+        return resp.data.msg;
       }
       return { ok: false, msg: [] };
     } catch (err) {
@@ -64,6 +65,18 @@ export const CampaignProvider = ({ children }) => {
         return { ok: true, msg: resp.data.msg }
       }
       return { ok: false, msg: [] }
+    } catch (error) {
+      console.error("Error fetching engineers:", error);
+      return { ok: false, msg: [] };
+    }
+  }
+
+  const getCampaignState = async ()=>{
+    try {
+      const resp = await api.get('/campaign/state');
+      if(resp.data && resp.data.ok){
+        setCampaignState(resp.data.msg);
+      }
     } catch (error) {
       console.error("Error fetching engineers:", error);
       return { ok: false, msg: [] };
@@ -116,6 +129,7 @@ export const CampaignProvider = ({ children }) => {
         campaigns, getCampaigns, 
         engineers, getEngineers, 
         candidatePositions, getCandidatePositions,
+        campaignState, getCampaignState,
         measures, getMeasures,
         postCampaign,
         postCandidates,

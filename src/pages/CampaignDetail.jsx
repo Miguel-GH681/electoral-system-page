@@ -53,15 +53,19 @@ const CampaignDetail = ()=>{
         }
 
         socket.on('vote', (payload) => {
-            const updated = candidatesRef.current.map((cr) => {
-                if (cr.membership_number === payload.candidate_id) {
-                return { ...cr, votes: cr.votes + 1 };
-                }
-                return cr;
-            });
+            if(payload){
+                const updated = candidatesRef.current.map((cr) => {
+                    if (cr.membership_number === payload.candidate_id) {
+                    return { ...cr, votes: cr.votes + 1 };
+                    }
+                    return cr;
+                });
 
-            candidatesRef.current = updated;
-            setCandidates(updated);
+                candidatesRef.current = updated;
+                setCandidates(updated);
+            } else{
+                alert('voto no autorizado')
+            }
         });
 
 
@@ -106,7 +110,7 @@ const CampaignDetail = ()=>{
         categories: candidates.filter(c => c.candidate_position_id == positionSelected).map((c) => c.full_name),
         },
         title: {
-        text: 'Votaciones por candidato',
+        text: 'Votaciones',
         align: 'center',
         style: {
             fontSize: '18px',
@@ -124,38 +128,31 @@ const CampaignDetail = ()=>{
         },
     ];
 
-
-    const series1 = [70, 30];
-
-    const options1 = {
-        labels: ["Votos Emitidos", "Votos Faltantes"],
-        chart: {
-            type: "donut",
-        },
-        dataLabels: {
-            enabled: true,
-            formatter: (val) => `${val.toFixed(1)}%`,
-        },
-        legend: {
-            position: "bottom",
-        },
-        plotOptions: {
-            pie: {
-                donut: {
-                size: "60%",
-                },
-            },
-        },
-    };
-
     return <>
         <Container fluid className={styles['maintenance-container']}>
-            <div className={styles['header']}>
-                <div className={styles['header-data']}>
-                    <p className={styles['header-title']}>{header.title}</p>
-                    <p className={styles['header-description']}>{header.description}</p>  
-                </div>
-            </div>
+            <Card className={detailStyles['graph-container']}>
+                <CardBody>
+                    <Row>
+                        <Col lg={6}>
+                            <div className={detailStyles['header-campaign']}>
+                                <p className={detailStyles['header-campaign-title']}>{header.title}</p>
+                                <p className={detailStyles['header-campaign-description']}>{header.description}</p>  
+                                <div>
+                                    <p>Tiempo Restante</p>
+                                    <div className={detailStyles['header-campaign-timer']}>
+                                        <div>{hours.toString().length == 1 ? '0' + hours : hours}</div>:
+                                        <div>{minutes.toString().length == 1 ? '0' + minutes : minutes}</div>:
+                                        <div>{seconds.toString().length == 1 ? '0' + seconds : seconds}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </Col>
+                        <Col lg={6}>
+                            <ReactApexChart options={options} series={series} type="bar" height={300}/>
+                        </Col>
+                    </Row>
+                </CardBody>
+            </Card>
 
             <Row className="mt-5">
                 <Col className="d-flex justify-content-between">
@@ -182,7 +179,7 @@ const CampaignDetail = ()=>{
                 </Col>
             </Row>
 
-            <Row xs={1} md={2} lg={3}>
+            <Row xs={1} md={2} lg={4}>
                 {
                 candidates
                     .filter(d => d.candidate_position_id === positionSelected)
@@ -218,33 +215,6 @@ const CampaignDetail = ()=>{
                     ))
                 }
             </Row>
-
-            <Row className="mt-5">
-                <Col className="d-flex justify-content-between">
-                    <div>
-                        <p className={detailStyles['filter-title']}>Estadísticas</p>
-                    </div>
-                    <div className={detailStyles['timer']}>
-                        <div>{hours.toString().length == 1 ? '0' + hours : hours}</div>:
-                        <div>{minutes.toString().length == 1 ? '0' + minutes : minutes}</div>:
-                        <div>{seconds.toString().length == 1 ? '0' + seconds : seconds}</div>
-                    </div>
-                </Col>
-            </Row>
-            <div >
-                <Card className={detailStyles['graph-container']}>
-                    <CardBody>
-                        <Row>
-                            <Col>
-                                <ReactApexChart options={options} series={series} type="bar" height={350} />
-                            </Col>
-                            <Col>
-                                <ReactApexChart options={options1} series={series1} type="donut" height={350} />
-                            </Col>
-                        </Row>
-                    </CardBody>
-                </Card>
-            </div>
         </Container>   
     </>
 }

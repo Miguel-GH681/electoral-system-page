@@ -1,5 +1,5 @@
 import { Card, Row, Col, Button, Container } from 'react-bootstrap';
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { FaPlus, FaVoteYea } from "react-icons/fa";
 import { BsFillPeopleFill } from "react-icons/bs";
 import { GrBook } from "react-icons/gr";
@@ -12,14 +12,19 @@ import { useNavigate } from 'react-router-dom';
 
 const AdminDashboard = () => {
   const { user } = useContext(AuthContext);
-  const { getCampaigns, campaigns } = useContext(CampaignContext);
+  const { getCampaigns, campaigns, getCampaignState, campaignState } = useContext(CampaignContext);
 
+  const [states, setStates] = useState([]);
+  const [stateSelected, setStateSelected] = useState(0);
+  
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCampaigns = async () => {
       try {
-        await getCampaigns(user.role_id);
+        await getCampaignState();
+        let resp = await getCampaigns(user.role_id);
+        statesFiltered(resp)
       } catch (err) {
         console.error("Error al obtener campañas:", err);
       }
@@ -27,6 +32,18 @@ const AdminDashboard = () => {
 
     fetchCampaigns();
   }, []);
+
+  const statesFiltered = (c)=>{
+    let stt = [];
+
+    c.forEach((d)=>{
+        if(!stt.find(p => p === d.campaign_state_id)){
+            stt.push(d.campaign_state_id);
+        }
+    });
+    setStates(stt);
+    setStateSelected(stt[0]);
+  }
 
   const createCampaign = ()=>{
     navigate('/campaigns/maintenance');
@@ -41,20 +58,32 @@ const AdminDashboard = () => {
         </div>
 
         <div>
-          <Button className={styles['filter-button']}>Todas</Button>
-          <Button className={styles['filter-button']}>Activas</Button>
-          <Button className={styles['filter-button']}>Finalizadas</Button>
+          {
+              states.map((p, index)=>(
+                  <button key={index}  
+                  className={
+                      stateSelected == p ?
+                      styles['filter-button-selected'] :
+                      styles['filter-button']
+                  } 
+                  onClick={()=>{
+                      setStateSelected(p)
+                  }}>
+                      { campaignState.find((cp) => cp['campaign_state_id'] == p)['description'] }
+                  </button>
+              ))
+          }
         </div>
       </div>
 
       {campaigns.length > 0 ? (
-        <Row xs={1} md={2} lg={3} xl={4}>
+        <Row xs={1} md={2} lg={2} xl={3}>
           {
-            campaigns.map((c, index) => (
+            campaigns.filter(c => c.campaign_state_id == stateSelected).map((c, index) => (
               c['campaign_id'] === 0 ?
               <Col key={c.campaign_id}>
                 <Card className={styles['box-creation']} onClick={createCampaign}>    
-                  <FaPlus size={40} className={styles['icon']}/>                  
+                  <FaPlus size={60} className={styles['icon']}/>                  
                 </Card>
               </Col> :
               <Col key={c.campaign_id}>

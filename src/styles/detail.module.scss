@@ -4,24 +4,6 @@
     font-family: 'Poppins', sans-serif;
 }
 
-.title{
-    font-size: 30px;
-    font-weight: 700;
-    color: v.$primary-text
-}
-
-.description{
-    color: v.$secondary-text
-}
-
-.box{
-    margin-top: 20px;
-    height: 120px;
-    border: v.$border;
-    box-shadow: v.$shadow;
-    cursor: pointer;
-}
-
 .filter-title{
     padding: 0;
     margin: 0;
@@ -30,27 +12,39 @@
     color: v.$primary-text
 }
 
-.header-row{
+.graph-container{
+    margin-top: 30px;
+    box-shadow: v.$shadow;
+    border: v.$border;
+}
+
+.header-campaign{
+    margin: 0px;
     height: 100%;
-    width: 100%;
+    color: v.$primary-text;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
     align-items: center;
+    justify-content: space-around;
 
-    .data-rows{
+    .header-campaign-title{
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .header-campaign-timer{
         display: flex;
-        flex-direction: column;
         justify-content: center;
-        align-items: center;
+        text-align: center;
 
-
-        p{
+        div{
+            width: 30px;
             font-size: 20px;
-            margin: 0px;
+            font-weight: bold;
         }
     }
 }
-
 
 .candidate-box{
     margin-top: 30px;
@@ -114,10 +108,4 @@
         justify-content: center;
         align-items: center;
     }
-}
-
-.graph-container{
-    margin-top: 30px;
-    box-shadow: v.$shadow;
-    border: v.$border;
 }

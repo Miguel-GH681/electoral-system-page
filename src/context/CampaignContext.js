@@ -9,6 +9,7 @@ export const CampaignProvider = ({ children }) => {
   const [candidatePositions, setCandidatePositions] = useState([]);
   const [campaignState, setCampaignState] = useState([]);
   const [measures, setMeasures] = useState([]);
+  const [report, setReport] = useState([]);
 
   const getCampaigns = async (role) => {    
     try {
@@ -28,6 +29,17 @@ export const CampaignProvider = ({ children }) => {
       return { ok: false, msg: [] };
     }
   };
+
+  const updateCampaign = async (campaign_id, campaign_state_id) =>{
+    try {
+      const resp = await api.put('/campaign/' + campaign_id, {
+        campaign_state_id
+      });
+    } catch (error) {
+        console.error("Error updating campaign:", error);
+      return { ok: false, msg: [] };
+    }
+  }
 
   const getEngineers = async ()=>{
     try {
@@ -123,6 +135,18 @@ export const CampaignProvider = ({ children }) => {
     }
   }
 
+  const getReport = async(campaignId)=>{
+    try {
+      const resp = await api.get('/campaign/report/' + campaignId);
+      if(resp.data && resp.data.ok){
+        setReport(resp.data.msg);
+      }
+    } catch (error) {
+      console.error("Error getDetailCampaign:", error);
+      return { ok: false, msg: [] };
+    }
+  }
+
   return (
     <CampaignContext.Provider value={
       { 
@@ -131,9 +155,11 @@ export const CampaignProvider = ({ children }) => {
         candidatePositions, getCandidatePositions,
         campaignState, getCampaignState,
         measures, getMeasures,
+        report, getReport,
         postCampaign,
         postCandidates,
-        getCampaignDetail
+        getCampaignDetail,
+        updateCampaign
       }
     }>
       {children}

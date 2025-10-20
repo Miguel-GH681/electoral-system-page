@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { CampaignContext } from "../context/CampaignContext";
 import { Card, CardBody, Container, Form, Button, Row, Col, Table } from "react-bootstrap";
 import styles from "../styles/campaign.module.scss";
+import { ToastContainer, toast } from "react-toastify";
 
 const CreateCampaign = ()=>{
 
@@ -75,7 +76,7 @@ const CreateCampaign = ()=>{
 
   const saveCampaignHeader = async ()=>{
     if(campaingName === '' || campaingDescription === '' || campaingDuration === 0 || measure === 0){
-      alert('Todos los campos son obligatorios')
+      toast('Todos los campos son obligatorios')
       return ''
     }
 
@@ -208,11 +209,12 @@ const CreateCampaign = ()=>{
             {
               headerStatus ?
               null :
-              <Row>
-                <Col className="d-flex justify-content-end">
-                  <Button variant="warning" onClick={saveCampaignHeader}>
+              <Row className="d-flex justify-content-end">
+                <Col xs={3}>
+                  <button type="button" className={styles['state-button']} onClick={saveCampaignHeader}>
                     Guardar
-                  </Button>
+                  </button>
+                  <ToastContainer />
                 </Col>
               </Row>
             }
@@ -290,10 +292,10 @@ const CreateCampaign = ()=>{
                   <Col>
                     <h5>Títulos académicos ({ diplomas.length })</h5>
                   </Col>
-                  <Col className="d-flex justify-content-end">
-                    <Button variant="warning" onClick={saveDiploma}>
+                  <Col xs={3} className="d-flex justify-content-end">
+                    <button type="button" className={styles['state-button']} onClick={saveDiploma}>
                       Agregar título
-                    </Button>
+                    </button>
                   </Col>
                 </Row>
                 <div>
@@ -372,11 +374,11 @@ const CreateCampaign = ()=>{
                   </tbody>
                 </Table>
                 <hr />
-                <Row>
-                  <Col className="d-flex justify-content-end">
-                    <Button variant="warning" onClick={saveCandidate}>
+                <Row className="d-flex justify-content-end">
+                  <Col xs={3}>
+                    <button type="button" className={styles['state-button']} onClick={saveCandidate}>
                       Guardar candidato
-                    </Button>
+                    </button>
                   </Col>
                 </Row>
               </Form>

@@ -8,6 +8,7 @@ import CreateCampaign from './pages/CampaignMaintenance';
 import CampaignDetail from './pages/CampaignDetail';
 import ProtectedRoute from './components/ProtectedRoute';
 import RegisterPage from './pages/RegisterPage';
+import ReportPage from './pages/ReportPage';
 
 
 function App() {
@@ -56,6 +57,15 @@ function App() {
               element={
                 <ProtectedRoute>
                   <CampaignDetail />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route 
+              path='/campaign/report'
+              element={
+                <ProtectedRoute allowedRole={1}>
+                  <ReportPage />
                 </ProtectedRoute>
               }
             />

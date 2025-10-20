@@ -169,6 +169,17 @@
     border-radius: 5px;
 }
 
+.state-button{
+    height: 35px;
+    width: 100%;
+    background-color: v.$primary;
+    border: v.$border;
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    border-radius: 5px;
+}
+
 .graph-container{
     margin-top: 50px;
 }

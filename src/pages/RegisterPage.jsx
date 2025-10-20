@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
-import { Form, Button, Container, Row, Col, Alert } from 'react-bootstrap';
+import { Form, Container, Row, Col, Alert } from 'react-bootstrap';
 import styles from "../styles/login.module.scss";
 
 const RegisterPage = ()=>{
@@ -19,33 +19,33 @@ const RegisterPage = ()=>{
 
     const postUser = async ()=>{
         try {
+            setLoading(true);
             const resp = await register(membershipNumber, fullname, email, dpi, birthdate, password);
             
             if(resp){
-                alert('Usuario creado con exito')
+                setLoading(false);
+                alert('Usuario creado con éxito');
                 navigate('/login');
-            } else{
-                alert('intente registrarse nuevamente');
             }
         } catch (error) {
+            setLoading(false);
             setError(error.response.data?.msg)
         }
     }
 
     return <>
         <Row className={styles['main-container']}>
-            <Col md={6}>
+            <Col md={5}>
                 <div className={styles['image-container']}>
                     <img src="https://travelgrafia.co/wp-content/uploads/2023/06/Muelle-en-el-Lago-Atitlan.jpg" alt="" />
                 </div>
             </Col>
-            <Col md={6}>
+            <Col md={7}>
                 <Row className={styles['row']}>
                     <Col md={10}>
-                        <Container className='d-flex justify-content-center mb-5'><h2>Registro</h2></Container>
-                        {error && <Alert variant="danger">{error}</Alert>}
-            
                         <Form>
+                            <Container className='d-flex justify-content-center mb-5'><h2>Registro</h2></Container>
+                            {error && <Alert variant="danger">{error}</Alert>}
                             <Form.Group className="mb-3" controlId="formMembershipNumber">
                                 <Form.Label>NÚMERO DE COLEGIADO</Form.Label>
                                 <Form.Control 
@@ -96,7 +96,7 @@ const RegisterPage = ()=>{
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formPassword">
-                                <Form.Label>Contraseña</Form.Label>
+                                <Form.Label>CONTRASEÑA</Form.Label>
                                 <Form.Control 
                                     type="password" 
                                     placeholder="********"
@@ -106,16 +106,16 @@ const RegisterPage = ()=>{
                             </Form.Group>
                             <Row className='pt-4'>
                                 <Col>
-                                    <Button variant='outline-warning' className="w-100" onClick={()=>{
+                                    <button className={styles['disable-button']} type='button' onClick={()=>{
                                         navigate('/login')
                                     }}>
                                         Iniciar
-                                    </Button>
+                                    </button>
                                 </Col>
                                 <Col>
-                                    <Button variant="warning" disabled={loading || (!membershipNumber || !dpi || !birthdate || !password || !email || !fullname)} className="w-100" onClick={postUser}>
-                                        Guardar
-                                    </Button>
+                                    <button type='button' disabled={loading || (!membershipNumber || !dpi || !birthdate || !password || !email || !fullname)} onClick={postUser}>
+                                        { loading ? 'Guardando...' : 'Guardar'}
+                                    </button>
                                 </Col>
                             </Row>
                         </Form>

@@ -16,8 +16,7 @@ const LoginPage = () => {
     const navigate = useNavigate();
 
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const sendLogin = async () => {
         setError(null);
         setLoading(true);
         try {
@@ -38,18 +37,18 @@ const LoginPage = () => {
 
     return (
         <Row className={styles['main-container']}>
-            <Col md={6}>
+            <Col md={5}>
                 <div className={styles['image-container']}>
                     <img src="https://travelgrafia.co/wp-content/uploads/2023/06/Muelle-en-el-Lago-Atitlan.jpg" alt="" />
                 </div>
             </Col>
-            <Col md={6}>
+            <Col md={7}>
                 <Row className={styles['row']}>
                     <Col md={10}>
                         <Container className='d-flex justify-content-center mb-5'><h2>Iniciar sesión</h2></Container>
                         {error && <Alert variant="danger">{error}</Alert>}
 
-                        <Form onSubmit={handleSubmit}>
+                        <Form>
                             <Form.Group className="mb-3" controlId="formMembershipNumber">
                                 <Form.Label>NÚMERO DE COLEGIADO</Form.Label>
                                 <Form.Control 
@@ -80,7 +79,7 @@ const LoginPage = () => {
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formPassword">
-                                <Form.Label>Contraseña</Form.Label>
+                                <Form.Label>CONTRASEÑA</Form.Label>
                                 <Form.Control 
                                     type="password" 
                                     placeholder="********"
@@ -90,16 +89,16 @@ const LoginPage = () => {
                             </Form.Group>
                             <Row className='pt-4'>
                                 <Col>
-                                    <Button variant='outline-warning' className="w-100" onClick={()=>{
+                                    <button className={styles['disable-button']} type='button' onClick={()=>{
                                         navigate('/register')
                                     }}>
                                         Registrar
-                                    </Button>
+                                    </button>
                                 </Col>
                                 <Col>
-                                    <Button variant="warning" type="submit" disabled={loading || (!membershipNumber || !dpi || !birthdate || !password)} className="w-100">
+                                    <button type='button' disabled={loading || (!membershipNumber || !dpi || !birthdate || !password)} onClick={sendLogin} >
                                         {loading ? 'Ingresando...' : 'Ingresar'}
-                                    </Button>
+                                    </button>
                                 </Col>
                             </Row>
                         </Form>

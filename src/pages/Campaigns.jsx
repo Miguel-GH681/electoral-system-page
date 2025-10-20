@@ -111,7 +111,11 @@ const AdminDashboard = () => {
                     </Row>
                     <Row className={styles['box-button']}>
                       <button onClick={
-                        ()=>{navigate('/campaigns/detail')}
+                        ()=>{
+                          user.role_id == 1 ?
+                          navigate('/campaign/report') :
+                          navigate('/campaigns/detail')
+                        }
                       }>
                         Ver detalle
                       </button>

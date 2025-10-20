@@ -53,7 +53,7 @@ function App() {
             />
 
             <Route 
-              path='/campaigns/detail'
+              path='/campaigns/detail/:campaign_id'
               element={
                 <ProtectedRoute>
                   <CampaignDetail />
@@ -62,7 +62,7 @@ function App() {
             />
 
             <Route 
-              path='/campaign/report'
+              path='/campaign/report/:campaign_id'
               element={
                 <ProtectedRoute allowedRole={1}>
                   <ReportPage />

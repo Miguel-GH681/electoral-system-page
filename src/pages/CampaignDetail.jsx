@@ -6,8 +6,11 @@ import detailStyles from '../styles/detail.module.scss'
 import ReactApexChart from 'react-apexcharts';
 import { VoteSocket } from '../hooks/VoteSocket';
 import { useTimer } from 'react-timer-hook';
+import { useParams } from "react-router-dom";
 
 const CampaignDetail = ()=>{
+    const { campaign_id } = useParams();
+
     const { getCampaignDetail, getCandidatePositions, candidatePositions } = useContext(CampaignContext);
     const [header, setHeader] = useState({title: '', description: ''})
     const [positions, setPositions] = useState([]);
@@ -34,7 +37,7 @@ const CampaignDetail = ()=>{
         const fetchCampaignDetail = async () => {
           try {
             await getCandidatePositions();
-            let resp = await getCampaignDetail(1);
+            let resp = await getCampaignDetail(campaign_id);
             setHeader(resp['campaign']);
             setCandidates(resp['candidates']);
             positionsFiltered(resp['candidates']);

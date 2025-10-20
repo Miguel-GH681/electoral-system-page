@@ -8,6 +8,7 @@ import { CampaignContext } from "../context/CampaignContext";
 import { AuthContext } from "../context/AuthContext";
 import styles from "../styles/campaign.module.scss";
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const AdminDashboard = () => {
@@ -112,13 +113,20 @@ const AdminDashboard = () => {
                     <Row className={styles['box-button']}>
                       <button onClick={
                         ()=>{
-                          user.role_id == 1 ?
-                          navigate('/campaign/report') :
-                          navigate('/campaigns/detail')
+                          if(user.role_id == 1){
+                            navigate('/campaign/report/' + c.campaign_id);
+                          } else{
+                            if(c.campaign_state_id == 2){
+                              navigate('/campaigns/detail/' + c.campaign_id);
+                            } else{
+                              toast('La campaña aún no ha iniciado');
+                            }
+                          }
                         }
                       }>
                         Ver detalle
                       </button>
+                      <ToastContainer />
                     </Row>
                   </Card.Body>
                 </Card>

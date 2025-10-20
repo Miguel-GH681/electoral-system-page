@@ -35,8 +35,9 @@ export const CampaignProvider = ({ children }) => {
       const resp = await api.put('/campaign/' + campaign_id, {
         campaign_state_id
       });
+      return {ok: true, msg: resp.data.msg}
     } catch (error) {
-        console.error("Error updating campaign:", error);
+      console.error("Error updating campaign:", error);
       return { ok: false, msg: [] };
     }
   }

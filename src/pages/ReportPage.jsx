@@ -6,8 +6,10 @@ import detailStyles from '../styles/detail.module.scss'
 import ReactApexChart from 'react-apexcharts';
 import { useTimer } from 'react-timer-hook';
 import { ToastContainer, toast } from "react-toastify";
+import { useParams } from "react-router-dom";
 
 const ReportPage = ()=>{
+    const { campaign_id } = useParams();
     const { getCampaignDetail, getCandidatePositions, candidatePositions, updateCampaign, campaignState, getCampaignState, report, getReport } = useContext(CampaignContext);
     const [header, setHeader] = useState({title: '', description: ''})
     const [candidates, setCandidates] = useState([]);
@@ -32,11 +34,12 @@ const ReportPage = ()=>{
           try {
             await getCandidatePositions();
             await getCampaignState();
-            await getReport(1);
-            let resp = await getCampaignDetail(1);
+            await getReport(campaign_id);
+            let resp = await getCampaignDetail(campaign_id);
             setHeader(resp['campaign']);
             setCandidates(resp['candidates']);
-            restart(new Date(resp['endDate'].replace(' ', 'T')))
+            restart(new Date(resp['endDate'].replace(' ', 'T')));
+            setState(resp['campaign']['campaign_state_id'])
           } catch (err) {
             console.error("Error al obtener campañas:", err);
           }
@@ -46,7 +49,8 @@ const ReportPage = ()=>{
     }, []);
 
     const updateState = async ()=>{
-        await updateCampaign(1, state);
+        const resp = await updateCampaign(campaign_id, state);
+        restart(new Date(resp['msg'].replace(' ', 'T')));
         toast('Estado actualizado exitosamente');
     }
 
@@ -91,7 +95,7 @@ const ReportPage = ()=>{
                                         <Form.Group className="mb-3">
                                             <Form.Label>Cambiar Estado</Form.Label>
                                             <Form.Select value={state} onChange={(e)=>{setState(e.target.value)}}>
-                                            <option value="">Selecciona una medida</option>
+                                            <option value="">Selecciona un estado</option>
                                             {
                                                 campaignState.map((p)=>(
                                                 <option key={p.campaign_state_id} value={p.campaign_state_id} >

@@ -102,6 +102,20 @@
     }
 }
 
+.timer{
+    font-size: 25px;
+    font-weight: bold;
+    color: v.$primary-text;
+    display: flex;
+
+    div{
+        width: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
 .graph-container{
     margin-top: 30px;
     box-shadow: v.$shadow;

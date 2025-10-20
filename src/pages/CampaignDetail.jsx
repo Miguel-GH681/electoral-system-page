@@ -3,10 +3,9 @@ import { CampaignContext } from "../context/CampaignContext";
 import { Card, CardBody, Container, Button, Row, Col } from "react-bootstrap";
 import styles from "../styles/campaign.module.scss";
 import detailStyles from '../styles/detail.module.scss'
-import { BsFillPeopleFill } from "react-icons/bs";
-import { FaVoteYea, FaCheckCircle  } from "react-icons/fa";
 import ReactApexChart from 'react-apexcharts';
 import { VoteSocket } from '../hooks/VoteSocket';
+import { useTimer } from 'react-timer-hook';
 
 const CampaignDetail = ()=>{
     const { getCampaignDetail, getCandidatePositions, candidatePositions } = useContext(CampaignContext);
@@ -18,6 +17,19 @@ const CampaignDetail = ()=>{
     const candidatesRef = useRef();
     candidatesRef.current = candidates;
 
+    const {
+        seconds,
+        minutes,
+        hours,
+        restart
+    } = useTimer({
+        expiryTimestamp: new Date(), 
+        autoStart: false,
+        onExpire: () => console.warn('onExpire called'), 
+        interval: 20 
+    });
+ 
+
     useEffect(() => {
         const fetchCampaignDetail = async () => {
           try {
@@ -26,6 +38,7 @@ const CampaignDetail = ()=>{
             setHeader(resp['campaign']);
             setCandidates(resp['candidates']);
             positionsFiltered(resp['candidates']);
+            restart(new Date(resp['endDate'].replace(' ', 'T')))
           } catch (err) {
             console.error("Error al obtener campañas:", err);
           }
@@ -79,6 +92,7 @@ const CampaignDetail = ()=>{
         socket.emit('vote', {
             candidate_id,
             voter_id: userData['membership_number'],
+            candidate_position_id: positionSelected,
             vote_date: new Date()
         });
     }
@@ -111,7 +125,7 @@ const CampaignDetail = ()=>{
     ];
 
 
-      const series1 = [70, 30];
+    const series1 = [70, 30];
 
     const options1 = {
         labels: ["Votos Emitidos", "Votos Faltantes"],
@@ -209,6 +223,11 @@ const CampaignDetail = ()=>{
                 <Col className="d-flex justify-content-between">
                     <div>
                         <p className={detailStyles['filter-title']}>Estadísticas</p>
+                    </div>
+                    <div className={detailStyles['timer']}>
+                        <div>{hours.toString().length == 1 ? '0' + hours : hours}</div>:
+                        <div>{minutes.toString().length == 1 ? '0' + minutes : minutes}</div>:
+                        <div>{seconds.toString().length == 1 ? '0' + seconds : seconds}</div>
                     </div>
                 </Col>
             </Row>

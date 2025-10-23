@@ -10,6 +10,7 @@ export const CampaignProvider = ({ children }) => {
   const [campaignState, setCampaignState] = useState([]);
   const [measures, setMeasures] = useState([]);
   const [report, setReport] = useState([]);
+  const [result, setResult] = useState([]);
 
   const getCampaigns = async (role) => {    
     try {
@@ -148,6 +149,18 @@ export const CampaignProvider = ({ children }) => {
     }
   }
 
+  const getResult = async(campaignId) =>{
+    try {
+      const resp = await api.get('/campaign/result/' + campaignId);
+      if(resp.data && resp.data.ok){
+        setResult(resp.data.msg);
+      }
+    } catch (error) {
+      console.error("Error getDetailCampaign:", error);
+      return { ok: false, msg: [] };
+    }
+  }
+
   return (
     <CampaignContext.Provider value={
       { 
@@ -157,6 +170,7 @@ export const CampaignProvider = ({ children }) => {
         campaignState, getCampaignState,
         measures, getMeasures,
         report, getReport,
+        result, getResult,
         postCampaign,
         postCandidates,
         getCampaignDetail,

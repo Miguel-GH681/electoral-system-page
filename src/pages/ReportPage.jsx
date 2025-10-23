@@ -10,7 +10,18 @@ import { useParams } from "react-router-dom";
 
 const ReportPage = ()=>{
     const { campaign_id } = useParams();
-    const { getCampaignDetail, getCandidatePositions, candidatePositions, updateCampaign, campaignState, getCampaignState, report, getReport } = useContext(CampaignContext);
+    const { 
+        getCampaignDetail, 
+        getCandidatePositions, 
+        candidatePositions, 
+        updateCampaign, 
+        campaignState, 
+        getCampaignState, 
+        report, 
+        getReport,
+        result,
+        getResult
+    } = useContext(CampaignContext);
     const [header, setHeader] = useState({title: '', description: ''})
     const [candidates, setCandidates] = useState([]);
     const [state, setState] = useState(0);
@@ -34,6 +45,7 @@ const ReportPage = ()=>{
           try {
             await getCandidatePositions();
             await getCampaignState();
+            await getResult(campaign_id);
             await getReport(campaign_id);
             let resp = await getCampaignDetail(campaign_id);
             setHeader(resp['campaign']);
@@ -131,6 +143,51 @@ const ReportPage = ()=>{
             </Card>
             <Card>
                 <CardBody>
+                    <Row>
+                        <Col>
+                            <p>Ganadores</p>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                            <Table striped bordered hover>
+                                <thead>
+                                    <tr>
+                                        <th>No.</th>
+                                        <th>Fotografía</th>
+                                        <th>Nombre</th>
+                                        <th>Posición</th>
+                                        <th>Votos</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                    result.length > 0 ?
+                                    result.map((r, index) =>(
+                                        <tr key={index}>
+                                            <td>{index + 1}</td>
+                                            <td className="d-flex justify-content-center">
+                                                <img src={r.photo} alt={r.candidate_name} height={80}/>
+                                            </td>
+                                            <td>{r.candidate_name}</td>
+                                            <td>{r.position_description}</td>
+                                            <td>{r.total_votes}</td>
+                                        </tr>
+                                    )) : null
+                                    }
+                                </tbody>
+                            </Table>
+                        </Col>
+                    </Row>
+                </CardBody>
+            </Card>
+            <Card>
+                <CardBody>
+                    <Row>
+                        <Col>
+                            <p>Votantes</p>
+                        </Col>
+                    </Row>
                     <Row>
                         <Col>
                             <Table striped bordered hover>

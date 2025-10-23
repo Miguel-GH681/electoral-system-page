@@ -15,7 +15,7 @@ const AdminDashboard = () => {
   const { user } = useContext(AuthContext);
   const { getCampaigns, campaigns, getCampaignState, campaignState } = useContext(CampaignContext);
 
-  const [states, setStates] = useState([]);
+  const [states, setStates] = useState<number[]>([]);
   const [stateSelected, setStateSelected] = useState(0);
   
   const navigate = useNavigate();
@@ -34,10 +34,10 @@ const AdminDashboard = () => {
     fetchCampaigns();
   }, []);
 
-  const statesFiltered = (c)=>{
-    let stt = [];
+  const statesFiltered = (c : any)=>{
+    let stt : number[] = [];
 
-    c.forEach((d)=>{
+    c.forEach((d : any)=>{
         if(!stt.find(p => p === d.campaign_state_id)){
             stt.push(d.campaign_state_id);
         }

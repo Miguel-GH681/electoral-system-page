@@ -12,7 +12,14 @@ const CreateCampaign = ()=>{
   const [graduationYear, setGraduationYear] = useState(0);
   const [diplomaTitle, setDiplomaTitle] = useState('');
   const [institution, setInstitution] = useState('');
-  const [diplomas, setDiplomas] = useState([]);
+  type Diploma = {
+    title: string;
+    description: string;
+    graduation_year: number;
+    institution: string;
+    candidate_id: number;
+  };
+  const [diplomas, setDiplomas] = useState<Diploma[]>([]);
   const [engineer, setEngineer] = useState(0);
   const [position, setPosition] = useState(0);
   const [measure, setMeasure] =  useState(0);
@@ -24,7 +31,15 @@ const CreateCampaign = ()=>{
   const [campaingVotes, setCampaingVotes] = useState(0);
   const [candidateDescription, setCandidateDescription] = useState('');
   const [candidatePhoto, setCandidatePhoto] = useState('');
-  const [candidates, setCandidates] = useState([]);
+  type Candidate = {
+    membership_number: number;
+    campaign_id: number;
+    description: string;
+    photo: string;
+    candidate_position_id: number;
+    diplomas: Diploma[];
+  };
+  const [candidates, setCandidates] = useState<Candidate[]>([]);
 
   useEffect(() => {
     const fetchData = async ()=> {
@@ -40,17 +55,19 @@ const CreateCampaign = ()=>{
     fetchData();
   }, []);
 
-  const getBase64 = (e) => {
+  const getBase64 = (e : any) => {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
     reader.onloadend = () => {
-      setCandidatePhoto(reader.result);
+      if (typeof reader.result === 'string') {
+        setCandidatePhoto(reader.result);
+      }
     };
     reader.readAsDataURL(file);
   };
 
-  const saveDiploma = (e)=>{
+  const saveDiploma = (e : any)=>{
     if(diplomaTitle === '' || diplomaDescription === '' || graduationYear === 0 || 
        institution === '' || engineer === 0 || position === 0 || candidateDescription === '' || candidatePhoto === ''){
       alert('Todos los campos son obligatorios')
@@ -121,15 +138,15 @@ const CreateCampaign = ()=>{
     setPosition(0);
   }
 
-  const handleMeasureChange = (e)=>{
+  const handleMeasureChange = (e :any)=>{
     setMeasure(e.target.value);
   }
 
-  const handleEngineerChange = (e)=>{
+  const handleEngineerChange = (e : any)=>{
     setEngineer(e.target.value);
   }
 
-  const handlePositionChange = (e)=>{
+  const handlePositionChange = (e : any)=>{
     setPosition(e.target.value);
   }
 
@@ -187,7 +204,7 @@ const CreateCampaign = ()=>{
                   <Form.Control 
                     type="number" 
                     placeholder="Tiempo de duración" 
-                    value={campaingDuration} onChange={(e)=> setCampaignDuration(e.target.value)}
+                    value={campaingDuration} onChange={(e)=> setCampaignDuration(Number(e.target.value))}
                     disabled={headerStatus}
                   />
                 </Form.Group>
@@ -200,7 +217,7 @@ const CreateCampaign = ()=>{
                   <Form.Control 
                     type="number" 
                     placeholder="Tiempo de duración" 
-                    value={campaingVotes} onChange={(e)=> setCampaingVotes(e.target.value)}
+                    value={campaingVotes} onChange={(e)=> setCampaingVotes(Number(e.target.value))}
                     disabled={headerStatus}
                   />
                 </Form.Group>
@@ -289,10 +306,10 @@ const CreateCampaign = ()=>{
                 </Row>
                 <hr />
                 <Row>
-                  <Col>
+                  <Col md={6}>
                     <h5>Títulos académicos ({ diplomas.length })</h5>
                   </Col>
-                  <Col xs={3} className="d-flex justify-content-end">
+                  <Col md={6} className="d-flex justify-content-end mb-2">
                     <button type="button" className={styles['state-button']} onClick={saveDiploma}>
                       Agregar título
                     </button>
@@ -332,7 +349,7 @@ const CreateCampaign = ()=>{
                           type="text" 
                           placeholder="Año de graduación" 
                           value={graduationYear}
-                          onChange={(e)=> setGraduationYear(e.target.value)}
+                          onChange={(e)=> setGraduationYear(Number(e.target.value))}
                         />
                       </Form.Group>
                     </Col>
@@ -375,7 +392,7 @@ const CreateCampaign = ()=>{
                 </Table>
                 <hr />
                 <Row className="d-flex justify-content-end">
-                  <Col xs={3}>
+                  <Col md={3}>
                     <button type="button" className={styles['state-button']} onClick={saveCandidate}>
                       Guardar candidato
                     </button>

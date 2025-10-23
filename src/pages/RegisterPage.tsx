@@ -27,7 +27,7 @@ const RegisterPage = ()=>{
                 alert('Usuario creado con éxito');
                 navigate('/login');
             }
-        } catch (error) {
+        } catch (error : any) {
             setLoading(false);
             setError(error.response.data?.msg)
         }

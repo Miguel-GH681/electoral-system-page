@@ -4,9 +4,18 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
 
-export const AuthContext = createContext(); //Investigar
+interface AuthContextType {
+    user: any;
+    loading: boolean;
+    login: (membershipNumber: string, dpi: string, birthdate: string, password: string) => Promise<{ ok: boolean, msg: any }>;
+    logout: () => void;
+    isAuthenticated: () => boolean;
+    register: (membership_number: string, full_name: string, email: string, dpi: string, birthdate: string, password: string) => Promise<boolean>;
+}
 
-export const AuthProvider = ({ children }) => {
+export const AuthContext = createContext<AuthContextType>({} as AuthContextType);
+
+export const AuthProvider = ({ children } : any) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -27,7 +36,7 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
     }, []);
 
-    const register = async (membership_number, full_name, email, dpi, birthdate, password) =>{        
+    const register = async (membership_number : string, full_name : string, email : string, dpi : string, birthdate : string, password : string) =>{        
         const resp = await api.post('/users', {membership_number, full_name, email, dpi, birthdate: formatDateForBackend(birthdate), password, role_id: 2});
         if(resp.data && resp.data.ok){            
             return true
@@ -36,7 +45,7 @@ export const AuthProvider = ({ children }) => {
         }
     }
 
-    const login = async (membershipNumber, dpi, birthdate, password) => {
+    const login = async (membershipNumber : string, dpi : string, birthdate : string, password : string) => {
         
         const resp = await api.post('/users/login', { membership_number: membershipNumber, dpi, birthdate: formatDateForBackend(birthdate), password });        
         if (resp.data && resp.data.ok) {
@@ -58,7 +67,7 @@ export const AuthProvider = ({ children }) => {
 
     const isAuthenticated = () => !!user;
 
-    function formatDateForBackend(inputDate) {
+    function formatDateForBackend(inputDate: any) {
         dayjs.extend(customParseFormat);
         const date = dayjs(inputDate, ['DD/MM/YYYY', 'MM/DD/YYYY', 'YYYY-MM-DD'], true);
 

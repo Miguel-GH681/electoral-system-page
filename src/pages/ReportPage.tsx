@@ -23,9 +23,9 @@ const ReportPage = ()=>{
         getResult
     } = useContext(CampaignContext);
     const [header, setHeader] = useState({title: '', description: ''})
-    const [candidates, setCandidates] = useState([]);
+    const [candidates, setCandidates] = useState<any[]>([]);
     const [state, setState] = useState(0);
-    const candidatesRef = useRef();
+    const candidatesRef = useRef<any[] | null>(null);
     candidatesRef.current = candidates;
 
     const {
@@ -78,7 +78,7 @@ const ReportPage = ()=>{
         },
         title: {
         text: 'Votaciones',
-        align: 'center',
+        align: "center" as const,
         style: {
             fontSize: '18px',
             fontWeight: 'bold',
@@ -108,7 +108,7 @@ const ReportPage = ()=>{
                                     <div>
                                         <Form.Group className="mb-3">
                                             <Form.Label>Cambiar Estado</Form.Label>
-                                            <Form.Select value={state} onChange={(e)=>{setState(e.target.value)}}>
+                                            <Form.Select value={state} onChange={(e)=>{setState(Number(e.target.value))}}>
                                             <option value="">Selecciona un estado</option>
                                             {
                                                 campaignState.map((p)=>(

@@ -1,9 +1,51 @@
 import React, { createContext, useState } from 'react';
 import api from '../axios';
 
-export const CampaignContext = createContext();
+type CampaignContextType = {
+  campaigns: any[];
+  engineers: any[];
+  candidatePositions: any[];
+  campaignState: any[];
+  measures: any[];
+  report: any[];
+  result: any[];
+  getCampaigns: (role: number) => Promise<any>;
+  updateCampaign: (campaign_id: any, campaign_state_id: any) => Promise<any>;
+  getEngineers: () => Promise<any>;
+  getCandidatePositions: () => Promise<any>;
+  getCampaignState: () => Promise<any>;
+  getMeasures: () => Promise<any>;
+  postCampaign: (campaign: any) => Promise<any>;
+  postCandidates: (candidate: any) => Promise<any>;
+  getCampaignDetail: (campaignId: any) => Promise<any>;
+  getReport: (campaignId: any) => Promise<any>;
+  getResult: (campaignId: any) => Promise<any>;
+};
 
-export const CampaignProvider = ({ children }) => {
+const defaultCampaignContext: CampaignContextType = {
+  campaigns: [],
+  engineers: [],
+  candidatePositions: [],
+  campaignState: [],
+  measures: [],
+  report: [],
+  result: [],
+  getCampaigns: async () => ({ ok: false, msg: [] }),
+  updateCampaign: async () => ({ ok: false, msg: [] }),
+  getEngineers: async () => ({ ok: false, msg: [] }),
+  getCandidatePositions: async () => ({ ok: false, msg: [] }),
+  getCampaignState: async () => ({ ok: false, msg: [] }),
+  getMeasures: async () => ({ ok: false, msg: [] }),
+  postCampaign: async () => ({ ok: false, msg: null }),
+  postCandidates: async () => ({ ok: false, msg: null }),
+  getCampaignDetail: async () => ({ ok: false, msg: null }),
+  getReport: async () => ({ ok: false, msg: [] }),
+  getResult: async () => ({ ok: false, msg: [] }),
+};
+
+export const CampaignContext = createContext<CampaignContextType>(defaultCampaignContext);
+
+export const CampaignProvider = ({ children } : any) => {
   const [campaigns, setCampaigns] = useState([]);
   const [engineers, setEngineers] = useState([]);
   const [candidatePositions, setCandidatePositions] = useState([]);
@@ -12,7 +54,7 @@ export const CampaignProvider = ({ children }) => {
   const [report, setReport] = useState([]);
   const [result, setResult] = useState([]);
 
-  const getCampaigns = async (role) => {    
+  const getCampaigns = async (role : number) => {    
     try {
       const resp = await api.get('/campaign');
       if (resp.data && resp.data.ok) {
@@ -31,7 +73,7 @@ export const CampaignProvider = ({ children }) => {
     }
   };
 
-  const updateCampaign = async (campaign_id, campaign_state_id) =>{
+  const updateCampaign = async (campaign_id : string, campaign_state_id : string) =>{
     try {
       const resp = await api.put('/campaign/' + campaign_id, {
         campaign_state_id
@@ -97,7 +139,7 @@ export const CampaignProvider = ({ children }) => {
     }
   }
 
-  const postCampaign = async (campaign)=>{
+  const postCampaign = async (campaign : string)=>{
     console.log(campaign);
     
     try {
@@ -113,7 +155,7 @@ export const CampaignProvider = ({ children }) => {
     }
   }
 
-  const postCandidates = async(candidate)=>{
+  const postCandidates = async(candidate : string)=>{
     try {
       const resp = await api.post('/candidate', candidate);
       if(resp.data && resp.data.ok){
@@ -125,7 +167,7 @@ export const CampaignProvider = ({ children }) => {
     }
   }
 
-  const getCampaignDetail = async(campaignId)=>{
+  const getCampaignDetail = async(campaignId : string)=>{
     try {
       const resp = await api.get('/campaign/' + campaignId);
       if(resp.data && resp.data.ok){
@@ -137,7 +179,7 @@ export const CampaignProvider = ({ children }) => {
     }
   }
 
-  const getReport = async(campaignId)=>{
+  const getReport = async(campaignId : string)=>{
     try {
       const resp = await api.get('/campaign/report/' + campaignId);
       if(resp.data && resp.data.ok){
@@ -149,7 +191,7 @@ export const CampaignProvider = ({ children }) => {
     }
   }
 
-  const getResult = async(campaignId) =>{
+  const getResult = async(campaignId : string) =>{
     try {
       const resp = await api.get('/campaign/result/' + campaignId);
       if(resp.data && resp.data.ok){

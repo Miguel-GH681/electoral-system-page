@@ -13,11 +13,11 @@ const CampaignDetail = ()=>{
 
     const { getCampaignDetail, getCandidatePositions, candidatePositions } = useContext(CampaignContext);
     const [header, setHeader] = useState({title: '', description: ''})
-    const [positions, setPositions] = useState([]);
+    const [positions, setPositions] = useState<number[]>([]);
     const [positionSelected, setPositionSelected] = useState(0);
-    const [candidates, setCandidates] = useState([]);
-    const socket = VoteSocket("http://localhost:3000", localStorage.getItem("token"));
-    const candidatesRef = useRef();
+    const [candidates, setCandidates] = useState<any[]>([]);
+    const socket = VoteSocket("http://localhost:3000", localStorage.getItem("token") || '');
+    const candidatesRef = useRef<any[]>([]);
     candidatesRef.current = candidates;
 
     const {
@@ -57,7 +57,7 @@ const CampaignDetail = ()=>{
 
         socket.on('vote', (payload) => {
             if(payload){
-                const updated = candidatesRef.current.map((cr) => {
+                const updated = candidatesRef.current.map((cr : any) => {
                     if (cr.membership_number === payload.candidate_id) {
                     return { ...cr, votes: cr.votes + 1 };
                     }
@@ -77,10 +77,10 @@ const CampaignDetail = ()=>{
         }
     }, [socket])
 
-    const positionsFiltered = (c)=>{
-        let pos = [];
+    const positionsFiltered = (c : any)=>{
+        let pos : number[] = [];
 
-        c.forEach((d)=>{
+        c.forEach((d : any)=>{
             if(!pos.find(p => p === d.candidate_position_id)){
                 pos.push(d.candidate_position_id);
             }
@@ -89,8 +89,8 @@ const CampaignDetail = ()=>{
         setPositionSelected(pos[0]);
     }
 
-    const sendVote = (candidate_id)=>{
-        let userData = JSON.parse(localStorage.getItem('user'));
+    const sendVote = (candidate_id : any)=>{
+        let userData = JSON.parse(localStorage.getItem('user') || '');
 
         if(!socket){
             return
@@ -114,7 +114,7 @@ const CampaignDetail = ()=>{
         },
         title: {
         text: 'Votaciones',
-        align: 'center',
+        align: "center" as "center",
         style: {
             fontSize: '18px',
             fontWeight: 'bold',

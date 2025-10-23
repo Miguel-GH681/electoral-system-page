@@ -24,9 +24,9 @@ const LoginPage = () => {
             if (resp.ok) {
                 navigate('/campaigns');
             } else {
-                setError(resp.message || 'Credenciales inválidas');
+                setError(resp.msg || 'Credenciales inválidas');
             }
-        } catch (err) {
+        } catch (err : any) {
             console.error(err);
             setError(err.response?.data?.msg || 'Error en el servidor');
         } finally{

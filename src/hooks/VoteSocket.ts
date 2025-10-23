@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
-export const VoteSocket = (serverUrl, token)=>{
-  const [socket, setSocket] = useState(null);
+export const VoteSocket = (serverUrl : string, token : string)=>{
+  const [socket, setSocket] = useState<Socket | null>(null);
 
   useEffect(() => {
     const socketTemp = io(serverUrl, {

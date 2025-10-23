@@ -107,7 +107,7 @@ const AdminDashboard = () => {
                       <Col className={styles['item-col']}>
                         <FaVoteYea />
                         <p>Votos</p>
-                        <p>{c.votes}</p>
+                        <p>{c.voted}/{c.votes}</p>
                       </Col>
                     </Row>
                     <Row className={styles['box-button']}>

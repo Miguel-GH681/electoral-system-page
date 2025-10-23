@@ -50,7 +50,9 @@ const ReportPage = ()=>{
 
     const updateState = async ()=>{
         const resp = await updateCampaign(campaign_id, state);
-        restart(new Date(resp['msg'].replace(' ', 'T')));
+        if(resp['msg']){
+            restart(new Date(resp['msg'].replace(' ', 'T')));
+        }
         toast('Estado actualizado exitosamente');
     }
 

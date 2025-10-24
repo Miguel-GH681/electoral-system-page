@@ -103,7 +103,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 25px;
 
     .filter-button{
         margin-left: 15px;
@@ -118,13 +117,31 @@
 
     .filter-button-selected{
         margin-left: 15px;
-        height: 50px;
-        width: 170px;
+        height: 40px;
+        width: 150px;
         background-color: v.$primary;
         border: v.$border;
         color: white;
         font-weight: bold;
         border-radius: 5px;
+    }
+
+    @media (max-width: 768px) {
+
+        .filter-button{
+            margin-bottom: 10px;
+        }
+
+        .filter-button-selected{
+            margin-bottom: 10px;
+        }
+
+        .button-container{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
     }
 
     .header-data{

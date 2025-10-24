@@ -58,7 +58,7 @@ const AdminDashboard = () => {
           <p className={styles['header-description']}>Seleccione una campaña para realizar su votación.</p>
         </div>
 
-        <div>
+        <div className={styles['button-container']}>
           {
               states.map((p, index)=>(
                   <button key={index}  

@@ -20,6 +20,7 @@ type CampaignContextType = {
   getCampaignDetail: (campaignId: any) => Promise<any>;
   getReport: (campaignId: any) => Promise<any>;
   getResult: (campaignId: any) => Promise<any>;
+  terminateCampaign: (campaignId: any) => Promise<any>;
 };
 
 const defaultCampaignContext: CampaignContextType = {
@@ -41,6 +42,7 @@ const defaultCampaignContext: CampaignContextType = {
   getCampaignDetail: async () => ({ ok: false, msg: null }),
   getReport: async () => ({ ok: false, msg: [] }),
   getResult: async () => ({ ok: false, msg: [] }),
+  terminateCampaign: async () => ({ ok: false, msg: false })
 };
 
 export const CampaignContext = createContext<CampaignContextType>(defaultCampaignContext);
@@ -203,6 +205,18 @@ export const CampaignProvider = ({ children } : any) => {
     }
   }
 
+  const terminateCampaign = async (campaignId : string) =>{
+    try {
+      const resp = await api.put('/campaign/terminate/' + campaignId);
+      if(resp.data && resp.data.ok){
+        return resp.data.ok;
+      }
+    } catch (error) {
+      console.error("Error terminateCampaign():", error);
+      return false
+    }
+  }
+
   return (
     <CampaignContext.Provider value={
       { 
@@ -216,7 +230,8 @@ export const CampaignProvider = ({ children } : any) => {
         postCampaign,
         postCandidates,
         getCampaignDetail,
-        updateCampaign
+        updateCampaign,
+        terminateCampaign
       }
     }>
       {children}

@@ -14,8 +14,13 @@
 
 .graph-container{
     margin-top: 30px;
+    margin-bottom: 50px;
     box-shadow: v.$shadow;
     border: v.$border;
+}
+
+.winners-container{
+    margin-bottom: 50px;
 }
 
 .header-campaign{

@@ -20,7 +20,8 @@ const ReportPage = ()=>{
         report, 
         getReport,
         result,
-        getResult
+        getResult,
+        terminateCampaign
     } = useContext(CampaignContext);
     const [header, setHeader] = useState({title: '', description: ''})
     const [candidates, setCandidates] = useState<any[]>([]);
@@ -36,7 +37,10 @@ const ReportPage = ()=>{
     } = useTimer({
         expiryTimestamp: new Date(), 
         autoStart: false,
-        onExpire: () => console.warn('onExpire called'), 
+        onExpire: async () => {
+            await terminateCampaign(campaign_id);
+            setState(4);
+        }, 
         interval: 20 
     });
  
@@ -50,7 +54,9 @@ const ReportPage = ()=>{
             let resp = await getCampaignDetail(campaign_id);
             setHeader(resp['campaign']);
             setCandidates(resp['candidates']);
-            restart(new Date(resp['endDate'].replace(' ', 'T')));
+            if(resp['endDate'] != "Invalid Date"){
+               restart(new Date(resp['endDate'].replace(' ', 'T'))); 
+            }
             setState(resp['campaign']['campaign_state_id'])
           } catch (err) {
             console.error("Error al obtener campañas:", err);
@@ -63,6 +69,8 @@ const ReportPage = ()=>{
     const updateState = async ()=>{
         const resp = await updateCampaign(campaign_id, state);
         if(resp['msg']){
+            console.log({tiempo: resp['msg']});
+            
             restart(new Date(resp['msg'].replace(' ', 'T')));
         }
         toast('Estado actualizado exitosamente');
@@ -141,7 +149,7 @@ const ReportPage = ()=>{
                     </Row>
                 </CardBody>
             </Card>
-            <Card>
+            <Card className={detailStyles['winners-container']}>
                 <CardBody>
                     <Row>
                         <Col>
@@ -150,33 +158,35 @@ const ReportPage = ()=>{
                     </Row>
                     <Row>
                         <Col>
-                            <Table striped bordered hover>
-                                <thead>
-                                    <tr>
-                                        <th>No.</th>
-                                        <th>Fotografía</th>
-                                        <th>Nombre</th>
-                                        <th>Posición</th>
-                                        <th>Votos</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {
-                                    result.length > 0 ?
-                                    result.map((r, index) =>(
-                                        <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td className="d-flex justify-content-center">
-                                                <img src={r.photo} alt={r.candidate_name} height={80}/>
-                                            </td>
-                                            <td>{r.candidate_name}</td>
-                                            <td>{r.position_description}</td>
-                                            <td>{r.total_votes}</td>
+                            <div className={styles['table-responsive-container']}>
+                                <Table striped bordered hover>
+                                    <thead>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th>Fotografía</th>
+                                            <th>Nombre</th>
+                                            <th>Posición</th>
+                                            <th>Votos</th>
                                         </tr>
-                                    )) : null
-                                    }
-                                </tbody>
-                            </Table>
+                                    </thead>
+                                    <tbody>
+                                        {
+                                        result.length > 0 ?
+                                        result.map((r, index) =>(
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <td className="d-flex justify-content-center">
+                                                    <img src={r.photo} alt={r.candidate_name} height={80}/>
+                                                </td>
+                                                <td>{r.candidate_name}</td>
+                                                <td>{r.position_description}</td>
+                                                <td>{r.total_votes}</td>
+                                            </tr>
+                                        )) : null
+                                        }
+                                    </tbody>
+                                </Table>
+                            </div>
                         </Col>
                     </Row>
                 </CardBody>

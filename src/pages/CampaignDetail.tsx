@@ -7,18 +7,20 @@ import ReactApexChart from 'react-apexcharts';
 import { VoteSocket } from '../hooks/VoteSocket';
 import { useTimer } from 'react-timer-hook';
 import { useParams } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const CampaignDetail = ()=>{
     const { campaign_id } = useParams();
 
-    const { getCampaignDetail, getCandidatePositions, candidatePositions } = useContext(CampaignContext);
+    const { getCampaignDetail, getCandidatePositions, candidatePositions, terminateCampaign } = useContext(CampaignContext);
     const [header, setHeader] = useState({title: '', description: ''})
     const [positions, setPositions] = useState<number[]>([]);
     const [positionSelected, setPositionSelected] = useState(0);
     const [candidates, setCandidates] = useState<any[]>([]);
-    const socket = VoteSocket("http://localhost:3000", localStorage.getItem("token") || '');
+    const socket = VoteSocket("https://electoral-system-backend.onrender.com", localStorage.getItem("token") || '');
     const candidatesRef = useRef<any[]>([]);
     candidatesRef.current = candidates;
+    const navigate = useNavigate();
 
     const {
         seconds,
@@ -28,7 +30,13 @@ const CampaignDetail = ()=>{
     } = useTimer({
         expiryTimestamp: new Date(), 
         autoStart: false,
-        onExpire: () => console.warn('onExpire called'), 
+        onExpire: async () =>{
+            const resp = await terminateCampaign(campaign_id);
+            if(resp){
+                alert('La campaña ya ha finalizado');
+                navigate('/campaigns');
+            }
+        }, 
         interval: 20 
     });
  

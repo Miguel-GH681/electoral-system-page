@@ -119,7 +119,7 @@ const AdminDashboard = () => {
                             if(c.campaign_state_id == 2){
                               navigate('/campaigns/detail/' + c.campaign_id);
                             } else{
-                              toast('La campaña aún no ha iniciado');
+                              toast('La campaña no esta disponible');
                             }
                           }
                         }

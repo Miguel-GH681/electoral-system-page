@@ -37,7 +37,7 @@ const LoginPage = () => {
 
     return (
         <Row className={styles['main-container']}>
-            <Col md={5}>
+            <Col className={styles['image-col']} md={5}>
                 <div className={styles['image-container']}>
                     <img src="https://travelgrafia.co/wp-content/uploads/2023/06/Muelle-en-el-Lago-Atitlan.jpg" alt="" />
                 </div>
@@ -96,7 +96,7 @@ const LoginPage = () => {
                                     </button>
                                 </Col>
                                 <Col>
-                                    <button type='button' disabled={loading || (!membershipNumber || !dpi || !birthdate || !password)} onClick={sendLogin} >
+                                    <button className={styles['enable-button']} type='button' disabled={loading || (!membershipNumber || !dpi || !birthdate || !password)} onClick={sendLogin} >
                                         {loading ? 'Ingresando...' : 'Ingresar'}
                                     </button>
                                 </Col>

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { Form, Container, Row, Col, Alert } from 'react-bootstrap';
 import styles from "../styles/login.module.scss";
+import { ToastContainer, toast } from "react-toastify";
 
 const RegisterPage = ()=>{
 
@@ -19,6 +20,21 @@ const RegisterPage = ()=>{
 
     const postUser = async ()=>{
         try {
+            if(password.length < 8){
+                toast('formato de contraseña inválido');
+                return;
+            }
+
+            if(dpi.length != 13){
+                toast('formato de DPI inválido');
+                return;
+            }
+
+            if(isNaN(new Date(birthdate).getTime())){
+                toast('formato de fecha inválido');
+                return;
+            }
+
             setLoading(true);
             const resp = await register(membershipNumber, fullname, email, dpi, birthdate, password);
             
@@ -35,7 +51,7 @@ const RegisterPage = ()=>{
 
     return <>
         <Row className={styles['main-container']}>
-            <Col md={5}>
+            <Col className={styles['image-col']} md={5}>
                 <div className={styles['image-container']}>
                     <img src="https://travelgrafia.co/wp-content/uploads/2023/06/Muelle-en-el-Lago-Atitlan.jpg" alt="" />
                 </div>
@@ -44,7 +60,7 @@ const RegisterPage = ()=>{
                 <Row className={styles['row']}>
                     <Col md={10}>
                         <Form>
-                            <Container className='d-flex justify-content-center mb-5'><h2>Registro</h2></Container>
+                            <Container className='d-flex justify-content-center mb-4 mt-5'><h2>Registro</h2></Container>
                             {error && <Alert variant="danger">{error}</Alert>}
                             <Form.Group className="mb-3" controlId="formMembershipNumber">
                                 <Form.Label>NÚMERO DE COLEGIADO</Form.Label>
@@ -112,10 +128,11 @@ const RegisterPage = ()=>{
                                         Iniciar
                                     </button>
                                 </Col>
-                                <Col>
-                                    <button type='button' disabled={loading || (!membershipNumber || !dpi || !birthdate || !password || !email || !fullname)} onClick={postUser}>
+                                <Col className='mb-4'>
+                                    <button className={styles['enable-button']} type='button' disabled={loading || (!membershipNumber || !dpi || !birthdate || !password || !email || !fullname)} onClick={postUser}>
                                         { loading ? 'Guardando...' : 'Guardar'}
                                     </button>
+                                    <ToastContainer />
                                 </Col>
                             </Row>
                         </Form>

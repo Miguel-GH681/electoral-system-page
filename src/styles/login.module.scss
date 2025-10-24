@@ -24,7 +24,17 @@ body{
         }
     }
 
-    button{
+    .disable-button{
+        height: 35px;
+        width: 100%;
+        cursor: pointer;
+        border-radius: 5px;
+        border: 1px solid v.$primary;
+        background-color: v.$white;
+        color: v.$primary;
+    }
+
+    .enable-button{
         border-radius: 5px;
         border: 1px solid v.$primary;
         background-color: v.$primary;
@@ -34,11 +44,12 @@ body{
         width: 100%;
         cursor: pointer;
     }
+    
 
-    .disable-button{
-        background-color: v.$white;
-        border-color: v.$primary;
-        color: v.$primary;
+    @media (max-width: 768px) {
+        .image-col{
+            display: none;
+        }
     }
 }
 
@@ -51,3 +62,19 @@ body{
     padding: 0px 30px;
 }
 
+// .enable-button{
+//     border-radius: 5px;
+//     border: 1px solid v.$primary;
+//     background-color: v.$primary;
+//     color: v.$white;
+//     font-size: 15px;
+//     height: 35px;
+//     width: 100%;
+//     cursor: pointer;
+// }
+
+// .disable-button{
+//     background-color: v.$white;
+//     border-color: v.$primary;
+//     color: v.$primary;
+// }

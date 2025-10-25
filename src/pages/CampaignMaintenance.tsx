@@ -306,10 +306,10 @@ const CreateCampaign = ()=>{
                 </Row>
                 <hr />
                 <Row>
-                  <Col md={6}>
+                  <Col>
                     <h5>Títulos académicos ({ diplomas.length })</h5>
                   </Col>
-                  <Col md={6} className="d-flex justify-content-end mb-2">
+                  <Col md={3} className="d-flex justify-content-end mb-2">
                     <button type="button" className={styles['state-button']} onClick={saveDiploma}>
                       Agregar título
                     </button>

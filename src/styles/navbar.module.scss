@@ -19,6 +19,18 @@
     }
 
     .icon{
+        margin-left: 15px;
         color: v.$primary-text;
+    }
+
+    .login-data{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        p{
+            margin: 0;
+            font-weight: bold;
+        }
     }
 }

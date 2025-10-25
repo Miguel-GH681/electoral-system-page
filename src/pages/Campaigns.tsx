@@ -84,14 +84,14 @@ const AdminDashboard = () => {
               c['campaign_id'] === 0 ?
               <Col key={c.campaign_id}>
                 <Card className={styles['box-creation']} onClick={createCampaign}>    
-                  <FaPlus size={60} className={styles['icon']}/>                  
+                  <FaPlus className={styles['icon']}/>                  
                 </Card>
               </Col> :
               <Col key={c.campaign_id}>
                 <Card className={styles.box}>
                   <Card.Body className="d-flex flex-column align-items-center justify-content-around">
                     <Row className={styles['header-box']}>
-                      <GrBook size={25}/>
+                      <GrBook />
                       <b className={styles['box-title']}>{c.title}</b>
                       <hr />
                       <div className={styles['box-description']}>

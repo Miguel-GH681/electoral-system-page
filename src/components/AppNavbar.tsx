@@ -11,7 +11,7 @@ function AppNavbar() {
       <h2>Sistema electoral</h2>
       <div className={styles['login-data']}>
         <p>{user.full_name} - {user.membership_number}</p>
-        <ImExit size={30} className={styles['icon']} onClick={logout}/>
+        <ImExit className={styles['icon']} onClick={logout}/>
       </div>
     </div>
   );
